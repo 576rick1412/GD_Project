@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Ground
   layers:
   - Default
   - TransparentFX
@@ -40,4 +41,28 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: BG_back
+    uniqueID: 296320801
+    locked: 0
+  - name: Ground
+    uniqueID: 2699260071
+    locked: 0
+  - name: Object
+    uniqueID: 1388238705
+    locked: 0
+  - name: Enemy
+    uniqueID: 1157381443
+    locked: 0
+  - name: Player
+    uniqueID: 2026665001
+    locked: 0
+  - name: BG_Front
+    uniqueID: 439082653
+    locked: 0
+  - name: Effect
+    uniqueID: 2716933893
+    locked: 0
+  - name: UI
+    uniqueID: 1225187443
     locked: 0
