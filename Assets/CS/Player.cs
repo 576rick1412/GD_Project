@@ -12,6 +12,8 @@ public class Player : CharaInfo
     public override void Awake()
     {
         base.Awake();
+
+        mask = LayerMask.GetMask("Enemy");
     }
 
     public override void Start()

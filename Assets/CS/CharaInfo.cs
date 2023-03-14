@@ -24,6 +24,7 @@ public class CharaInfo : MonoBehaviour
     public float HP;            // 캐릭터 HP
     public float speed;         // 캐릭터 속도
     public float jumpValue;     // 캐릭터 점프 높이
+
     protected bool isJumpLock;  // 캐릭터 점프 잠금
     protected bool isMoveLock;  // 캐릭터 이동 잠금
 
@@ -34,6 +35,9 @@ public class CharaInfo : MonoBehaviour
         public float delay;     // 공격 딜레이
         public float length;    // 공격 길이
     }
+
+    protected Attack setAtk;
+    protected LayerMask mask;
 
     Rigidbody2D rigid;
     Animator anim;
@@ -65,16 +69,20 @@ public class CharaInfo : MonoBehaviour
     public virtual void MoveRot(float h)
     {
         transform.position += new Vector3(h, 0, 0) * speed * Time.deltaTime;
-        ChangeAnim(1);  // 달리기 애니메이션으로 변경
 
         float rot = h < 0 ? 180 : 0;
         transform.rotation = Quaternion.Euler(0, rot, 0);
+
+        ChangeAnim(1);  // 달리기 애니메이션으로 변경
     }
 
     public void Jump()
     {
         rigid.AddForce(Vector2.up * jumpValue, ForceMode2D.Impulse);
         isJumpLock = true;
+
+        ChangeAnim("isGround", isJumpLock);
+        ChangeAnim("Jump");  // 점프 애니메이션으로 변경
     }   // 캐릭터 점프
     public void Dash(float h)
     {
@@ -82,30 +90,35 @@ public class CharaInfo : MonoBehaviour
         else rigid.velocity = Vector2.right * speed * 2f;
 
         StartCoroutine(MoveUnlock(0.8f));
+
+        //ChangeAnim("Jump");  // 대쉬 애니메이션으로 변경
     }   // 캐릭터 대쉬
 
-    /*
+    
     // Cast함수들은 애니메이션 이벤트에서 사용
     public virtual void Cast_S(int i)
     {
-        Debug.DrawRay(transform.position, transform.right * atk[i].length, Color.red);
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, atk[i].length, mask);
+        Debug.DrawRay(transform.position, transform.right * setAtk.length, Color.red);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, setAtk.length, mask);
 
-        if (hit.collider != null) hit.collider.gameObject.GetComponent<CharaInfo>().Hit(atk[i].DMG);
+        if (hit.collider != null) hit.collider.gameObject.GetComponent<CharaInfo>()._HP = setAtk.damage;
 
         // 공격이 나간 시점부터 딜레이 시작
-        StopCoroutine("MoveUnlock");
-        StartCoroutine(MoveUnlock(atk[i].delay));
+        StartCoroutine(MoveUnlock(setAtk.delay));
     }
+
     public virtual void Cast_M(int i)
     {
-        Debug.DrawRay(transform.position, transform.right * atk[i].length, Color.red);
-        RaycastHit2D[] hit = Physics2D.RaycastAll(transform.position, transform.right, atk[i].length, mask);
+        Debug.DrawRay(transform.position, transform.right * setAtk.length, Color.red);
+        RaycastHit2D[] hit = Physics2D.RaycastAll(transform.position, transform.right, setAtk.length, mask);
 
         if (hit != null) return;
-        for (int k = 0; k < hit.Length; k++) hit[i].collider.gameObject.GetComponent<CharaInfo>().Hit(atk[i].DMG);
+        for (int k = 0; k < hit.Length; k++) hit[i].collider.gameObject.GetComponent<CharaInfo>()._HP = setAtk.damage;
+
+        // 공격이 나간 시점부터 딜레이 시작
+        StartCoroutine(MoveUnlock(setAtk.delay));
     }
-    */  // 레이캐스트 불러옴
+
     public virtual void Die()
     {
         Debug.Log("사망");
@@ -135,6 +148,9 @@ public class CharaInfo : MonoBehaviour
     public void OnCollisionEnter2D(Collision2D collision)
     {
         if(collision.gameObject.CompareTag("Ground"))
+        {
             isJumpLock = false;
+            ChangeAnim("isGround", isJumpLock);
+        }
     }
 }
