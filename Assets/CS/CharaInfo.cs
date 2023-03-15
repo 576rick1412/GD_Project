@@ -25,6 +25,7 @@ public class CharaInfo : MonoBehaviour
     public float speed;         // 캐릭터 속도
     public float jumpValue;     // 캐릭터 점프 높이
 
+    protected bool isJump;      // 캐릭터 점프
     protected bool isJumpLock;  // 캐릭터 점프 잠금
     protected bool isMoveLock;  // 캐릭터 이동 잠금
 
@@ -52,6 +53,7 @@ public class CharaInfo : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
 
+        isJump     = false;
         isJumpLock = false;
         isMoveLock = false;
     }
@@ -81,7 +83,6 @@ public class CharaInfo : MonoBehaviour
         rigid.AddForce(Vector2.up * jumpValue, ForceMode2D.Impulse);
         isJumpLock = true;
 
-        ChangeAnim("isGround", isJumpLock);
         ChangeAnim("Jump");  // 점프 애니메이션으로 변경
     }   // 캐릭터 점프
     public void Dash(float h)
@@ -145,12 +146,21 @@ public class CharaInfo : MonoBehaviour
         yield return null;
     }
 
+    public void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            isJump = true;
+            ChangeAnim("isJump", isJump);
+        }
+    }
     public void OnCollisionEnter2D(Collision2D collision)
     {
         if(collision.gameObject.CompareTag("Ground"))
         {
+            isJump = false;
             isJumpLock = false;
-            ChangeAnim("isGround", isJumpLock);
+            ChangeAnim("isJump", isJump);
         }
     }
 }
