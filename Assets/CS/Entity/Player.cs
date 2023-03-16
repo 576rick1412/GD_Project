@@ -6,19 +6,24 @@ public class Player : CharaInfo
 {
     public Attack[] atk;
 
-
     float setH = 1;     // 좌우 이동키 동시에 눌렀을 때 멈추지 않도록 하는 변수
+    
 
+    [SerializeField]
+    bool isPlatform;    // 플랫폼 체크
+    BoxCollider2D box2D;
     protected override void Awake()
     {
         base.Awake();
 
         mask = LayerMask.GetMask("Enemy");
+
+        box2D = GetComponent<BoxCollider2D>();
     }
 
     protected override void Start()
     {
-        
+        isPlatform = false;
     }
 
     protected override void Update()
@@ -31,8 +36,12 @@ public class Player : CharaInfo
         bool isControl = false; // 조작 기록 확인
 
         // 점프
-        if(Input.GetKeyDown(KeyCode.Space) && !isJumpLock)
+        if(Input.GetKeyDown(KeyCode.Space) && isGround)
         { Jump(); return; }
+
+        // 플랫폼에서 바닥으로 내려오기
+        if(Input.GetKeyDown(KeyCode.DownArrow) && isPlatform)
+            StartCoroutine(Box2DEneable());
 
         // 달리기
         if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.LeftArrow))
@@ -78,5 +87,40 @@ public class Player : CharaInfo
 
         // 조작 없음
         if(!isControl) ChangeAnim(0); return;
+    }
+
+    IEnumerator Box2DEneable()
+    {
+        box2D.isTrigger = true;
+        yield return new WaitForSeconds(0.5f);
+
+        isPlatform = false;
+
+        box2D.isTrigger = false;
+    }
+
+    protected override void OnCollisionEnter2D(Collision2D collision)
+    {
+        base.OnCollisionEnter2D(collision);
+
+        // 플랫폼을 올라왔을 시 내려올 수 있도록 참으로 변경
+        if (collision.gameObject.CompareTag("Platform")) isPlatform = true;
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            box2D.isTrigger = false;
+            isPlatform = false;
+        }
+    }
+
+    protected override void OnCollisionExit2D(Collision2D collision)
+    {
+        base.OnCollisionExit2D(collision);
+
+        // 플랫폼에서 내려왔을 시 바닥으로 꺼지지 않게 거짓으로 변경
+        if (collision.gameObject.CompareTag("Platform")) isPlatform = false;
     }
 }

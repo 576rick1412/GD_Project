@@ -25,8 +25,7 @@ public class CharaInfo : MonoBehaviour
     public float speed;         // 캐릭터 속도
     public float jumpValue;     // 캐릭터 점프 높이
 
-    protected bool isJump;      // 캐릭터 점프
-    protected bool isJumpLock;  // 캐릭터 점프 잠금
+    protected bool isGround;    // 바닥 체크 && 점프 체크
     protected bool isMoveLock;  // 캐릭터 이동 잠금
 
     [Serializable]
@@ -53,14 +52,12 @@ public class CharaInfo : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
 
-        isJump     = false;
-        isJumpLock = false;
         isMoveLock = false;
     }
 
     protected virtual void Start()
     {
-        
+        isGround = true;
     }
 
     protected virtual void Update()
@@ -84,7 +81,6 @@ public class CharaInfo : MonoBehaviour
     protected virtual void Jump()
     {
         rigid.AddForce(Vector2.up * jumpValue, ForceMode2D.Impulse);
-        isJumpLock = true;
 
         ChangeAnim("Jump");  // 점프 애니메이션으로 변경
     }   // 캐릭터 점프
@@ -94,11 +90,8 @@ public class CharaInfo : MonoBehaviour
         else rigid.velocity = Vector2.right * speed * 2f;
 
         StartCoroutine(MoveUnlock(0.8f));
-
-        //ChangeAnim("Jump");  // 대쉬 애니메이션으로 변경
     }   // 캐릭터 대쉬
 
-    
     // Cast함수들은 애니메이션 이벤트에서 사용
     public virtual void Cast_S(int i)
     {
@@ -148,22 +141,21 @@ public class CharaInfo : MonoBehaviour
 
         yield return null;
     }
+    protected virtual void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Platform"))
+        {
+            isGround = true;
+            ChangeAnim("isGround", isGround);
+        }
+    }
 
     protected virtual void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Ground"))
+        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Platform"))
         {
-            isJump = true;
-            ChangeAnim("isJump", isJump);
-        }
-    }
-    protected virtual void OnCollisionEnter2D(Collision2D collision)
-    {
-        if(collision.gameObject.CompareTag("Ground"))
-        {
-            isJump = false;
-            isJumpLock = false;
-            ChangeAnim("isJump", isJump);
+            isGround = false;
+            ChangeAnim("isGround", isGround);
         }
     }
 }
