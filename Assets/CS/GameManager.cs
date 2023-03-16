@@ -12,22 +12,20 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager GM;
 
-    [Header("로딩 화면, 스테이지 정보")]
-    public string stageName;
-    public string stageInformation;
-
+    // 메인DB 및 데이터 저장 경로
+    public MainDB data;
     string filePath;
+
     void Awake()
     {
         GM = this;
         filePath = Application.persistentDataPath + "/MainDB.txt";
+        Debug.Log(filePath);
 
         var obj = FindObjectsOfType<GameManager>();
         if (obj.Length == 1) DontDestroyOnLoad(gameObject);
         else Destroy(gameObject);
     }
-
-    public MainDB data;
 
     void Start()
     {
@@ -61,9 +59,7 @@ public class GameManager : MonoBehaviour
     {
         data = new MainDB();
 
-
-
-
+        data.isKorean = true;
 
         SavaData();
     }
@@ -76,9 +72,11 @@ public class GameManager : MonoBehaviour
         public string
             key = "m#XhYd*FJbNkWzOvLqI@cPeT";
 
-
+        [Header("설정")]
+        public bool isKorean;
     }
 }
+
 namespace AesEncryptionNS.Con
 {
     public class Program
