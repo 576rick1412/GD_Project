@@ -6,7 +6,7 @@ using TMPro;
 public class TitleSceneUI : MonoBehaviour
 {
     public TextMeshProUGUI anyPressKey;
-    private void Awake()
+    private void Start()
     {
         if (GameManager.GM.data.isKorean)
         {
