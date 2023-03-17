@@ -45,6 +45,12 @@ public class MainSceneUI : MonoBehaviour
     public TextMeshProUGUI sfxAudioTMP;             // 효과음 설정 텍스트
     public Slider SFXSlider;                        // 전체 오디오 슬라이더
 
+    [Header("설정창 - 데이터 파트")]
+    public TextMeshProUGUI dataTitleTMP;           // 데이터 타이틀 텍스트
+
+    [Header("설정창 - 게임플레이 파트")]
+    public TextMeshProUGUI gameplayTitleTMP;           // 게임플레이 타이틀 텍스트
+
     void Start()
     {
         setWindow = null;
@@ -91,6 +97,7 @@ public class MainSceneUI : MonoBehaviour
     {
         WindowControl(ref optionWindow);
 
+        // 대충 기본 텍스트 전부
         if (GameManager.GM.data.isKorean)
         {
             optionTitleTMP.text = "설정";
@@ -106,6 +113,12 @@ public class MainSceneUI : MonoBehaviour
             masterAudioTMP.text = "전체";
             bgmAudioTMP.text = "배경음";
             sfxAudioTMP.text = "효과음";
+
+            // 데이터 파트
+            dataTitleTMP.text = "데이터";
+
+            // 게임플레이 파트
+            gameplayTitleTMP.text = "게임 플레이";
         }
         else
         {
@@ -122,6 +135,12 @@ public class MainSceneUI : MonoBehaviour
             masterAudioTMP.text = "Master";
             bgmAudioTMP.text = "BGM";
             sfxAudioTMP.text = "SFX";
+
+            // 데이터 파트
+            dataTitleTMP.text = "Data";
+
+            // 게임플레이 파트
+            gameplayTitleTMP.text = "Game Play";
         }
 
         // 전체하면 언어설정
