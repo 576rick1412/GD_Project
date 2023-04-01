@@ -6,7 +6,7 @@ public class Player : CharaInfo
 {
     public Attack[] atk;
 
-    float setH = 1;     // 좌우 이동키 동시에 눌렀을 때 멈추지 않도록 하는 변수
+    public float setH = 1;     // 좌우 이동키 동시에 눌렀을 때 멈추지 않도록 하는 변수
     
 
     [SerializeField]
@@ -24,6 +24,8 @@ public class Player : CharaInfo
     protected override void Start()
     {
         isPlatform = false;
+
+        int x = -10;
     }
 
     protected override void Update()
@@ -58,8 +60,7 @@ public class Player : CharaInfo
              */
 
             float h = Input.GetAxisRaw("Horizontal");
-            Rotate(h);
-
+            
             Debug.DrawRay(transform.position, transform.right * 0.1f, Color.red);
             RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, 0.1f, LayerMask.GetMask("Ground"));
             // 레이캐스트에 성공했다면 이동 중지
@@ -73,14 +74,18 @@ public class Player : CharaInfo
                 { Dash(-setH); return; }    
                 
                 // 일반 이동
-                Move(-setH); return; 
+                Move(-setH);
+                Rotate(-setH);
+                return; 
             }
 
             if (Input.GetKey(KeyCode.LeftShift))
             { Dash(h); return; }    // 대쉬
 
             // 일반 이동
-            Move(h); setH = h;
+            Rotate(h);
+            Move(h); 
+            setH = h;
 
             isControl = true;
         }

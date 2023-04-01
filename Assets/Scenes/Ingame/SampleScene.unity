@@ -4137,6 +4137,7 @@ MonoBehaviour:
   speed: 12
   jumpValue: 28
   atk: []
+  setH: 1
   isPlatform: 0
 --- !u!1 &1843518997
 GameObject:
