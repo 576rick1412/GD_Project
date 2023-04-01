@@ -60,7 +60,8 @@ public class Player : CharaInfo
              */
 
             float h = Input.GetAxisRaw("Horizontal");
-            
+            Rotate(h);
+
             Debug.DrawRay(transform.position, transform.right * 0.1f, Color.red);
             RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, 0.1f, LayerMask.GetMask("Ground"));
             // 레이캐스트에 성공했다면 이동 중지
