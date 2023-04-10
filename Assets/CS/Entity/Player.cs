@@ -45,12 +45,12 @@ public class Player : CharaInfo
         if(Input.GetKeyDown(KeyCode.DownArrow) && isPlatform)
             StartCoroutine(Box2DEneable());
 
-        // 달리기
+        // 달리기 & 대쉬
         if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.LeftArrow))
         {
             /*  < 달리기 입력의 대략적인 흐름 >
              * 1. 이동 키 입력 확인
-             * 2. 입력에 따른 캐릭터 방향 이동
+             * 2. 입력 방향으로 캐릭터 회전
              *      -> 레이캐스트를 앞으로 쏘기 때문에 캐릭터가 이동할 수 있도록 미리 돌림
              * 3. 전방으로 레이를 쏴서 앞에 타일맵이 있다면 이동 불가 (리턴)
              * 4. 양방향 입력 시 가장 최근에 입력된 방향으로 이동하도록 함
@@ -62,10 +62,15 @@ public class Player : CharaInfo
             float h = Input.GetAxisRaw("Horizontal");
             Rotate(h);
 
-            Debug.DrawRay(transform.position, transform.right * 0.1f, Color.red);
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, 0.1f, LayerMask.GetMask("Ground"));
+            Debug.DrawRay(transform.position, transform.right * 0.05f, Color.red);
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, 0.05f, LayerMask.GetMask("Ground"));
             // 레이캐스트에 성공했다면 이동 중지
-            if (hit.collider != null) return;
+            if (hit.collider != null)
+            {
+                box2D.size = new Vector2(0.08f, 0.25f);
+                Invoke("Box2DSizeReturn", 0.05f);
+                return;
+            }
 
             // 두 개 다 눌렸을 때 기존 방향의 반대로 이동되도록
             if (Input.GetKey(KeyCode.RightArrow) && Input.GetKey(KeyCode.LeftArrow))
@@ -82,7 +87,7 @@ public class Player : CharaInfo
 
             if (Input.GetKey(KeyCode.LeftShift))
             { Dash(h); return; }    // 대쉬
-
+            
             // 일반 이동
             Rotate(h);
             Move(h); 
@@ -92,7 +97,7 @@ public class Player : CharaInfo
         }
 
         // 조작 없음
-        if(!isControl) ChangeAnim(0); return;
+        if (!isControl) ChangeAnim(0); return;
     }
 
     IEnumerator Box2DEneable()
@@ -103,6 +108,13 @@ public class Player : CharaInfo
         isPlatform = false;
 
         box2D.isTrigger = false;
+    }
+
+    // 벽 끼임 방지로 콜라이더 크기 줄인거 원상복구
+    void Box2DSizeReturn()
+    {
+        // 플레이어 벽 끼임 방지
+        box2D.size = new Vector2(0.09f, 0.25f);
     }
 
     protected override void OnCollisionEnter2D(Collision2D collision)
