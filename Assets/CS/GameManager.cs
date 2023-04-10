@@ -70,15 +70,14 @@ public class GameManager : MonoBehaviour
         data = new MainDB();
 
         // 설정창 - 그래픽 파트
-        
         {
             data.graphic_Resolution[0] = new Vector2(1920, 1080);
             data.graphic_Resolution[1] = new Vector2(1680, 1050);
-            data.graphic_Resolution[2] = new Vector2(1600,  900);
-            data.graphic_Resolution[3] = new Vector2(1440,  900);
+            data.graphic_Resolution[2] = new Vector2(1600, 900);
+            data.graphic_Resolution[3] = new Vector2(1440, 900);
             data.graphic_Resolution[4] = new Vector2(1280, 1024);
-            data.graphic_Resolution[5] = new Vector2(1280,  960);
-            data.graphic_Resolution[6] = new Vector2(1280,  720);
+            data.graphic_Resolution[5] = new Vector2(1280, 960);
+            data.graphic_Resolution[6] = new Vector2(1280, 720);
         }   // 그래픽 해상도 초기화
         data.graphic_ResolutionIndex = 0;
         data.isFullScreen = true;
@@ -89,6 +88,7 @@ public class GameManager : MonoBehaviour
         data.BGMAudioValue = 0f;
         data.SFXAudioValue = 0f;
 
+        // 설정창 - 게임플레이 파트
         data.isKorean = true;
 
 
@@ -103,22 +103,20 @@ public class GameManager : MonoBehaviour
         public string
             key = "m#XhYd*FJbNkWzOvLqI@cPeT";
 
-        [Header("설정")]
 
-        // 그래픽 파트
+        // 설정창 - 그래픽 파트
         [HideInInspector]
         public Vector2[] graphic_Resolution = new Vector2[7];   // 그래픽 해상도 설정
         public int graphic_ResolutionIndex;                     // 그래픽 해상도 설정 인덱스
         public bool isFullScreen;                               // 전체화면 여부
         public bool isLightControl;                             // 광원효과 여부
 
-        // 오디오 파트
+        // 설정창 - 오디오 파트
         public float masterAudioValue;                          // 마스터 볼륨값
         public float BGMAudioValue;                             // 배경음 볼륨값
         public float SFXAudioValue;                             // 효과음 볼륨값
 
-
-
+        // 설정창 - 게임플레이 파트
         public bool isKorean;
     }
 }
