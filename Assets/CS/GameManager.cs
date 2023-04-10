@@ -12,6 +12,11 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager GM;
 
+    // 카메라 줌
+    public float minZoom;
+    public float maxZoom;
+    public bool isZoom;
+
     // 메인DB 및 데이터 저장 경로
     public MainDB data;
     string filePath;
@@ -101,6 +106,7 @@ public class GameManager : MonoBehaviour
         [Header("설정")]
 
         // 그래픽 파트
+        [HideInInspector]
         public Vector2[] graphic_Resolution = new Vector2[7];   // 그래픽 해상도 설정
         public int graphic_ResolutionIndex;                     // 그래픽 해상도 설정 인덱스
         public bool isFullScreen;                               // 전체화면 여부

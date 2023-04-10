@@ -5,6 +5,8 @@ using System;
 
 public class CharaInfo : MonoBehaviour
 {
+    protected bool isPlayer;    // 플레이어인지 여부
+
     public float _HP
     {
         get
@@ -14,11 +16,17 @@ public class CharaInfo : MonoBehaviour
 
         set
         {
+            if(HP <= 0)
+            {
+                return;
+            }   // 체력이 0 이하라면 리턴
+
             HP -= value;
             if (HP <= 0) Die();
             else Hit();
         }
     }         // 체력 관리 프로퍼티
+    [Header("캐릭터 기본 설정")]
     public float setHP;         // HP 최대치 저장
     [HideInInspector]
     public float HP;            // 캐릭터 HP
@@ -39,8 +47,8 @@ public class CharaInfo : MonoBehaviour
     protected Attack setAtk;
     protected LayerMask mask;
 
-    Rigidbody2D rigid;
-    Animator anim;
+    protected Rigidbody2D rigid;
+    protected Animator anim;
     protected IEnumerator moveLockIenum;  // 무브락 코루틴 담는 IEnumerator
     /* 애니메이션 지정 번호
      0 : 정지
@@ -51,6 +59,18 @@ public class CharaInfo : MonoBehaviour
     {
         rigid = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+
+        HP = setHP;     // 체력 초기화
+
+        // 피격 관련 설정
+        if(isPlayer)
+        {
+            mask = LayerMask.GetMask("Enemy");
+        }
+        else
+        {
+            mask = LayerMask.GetMask("Player");
+        }
 
         isMoveLock = false;
     }
@@ -93,32 +113,40 @@ public class CharaInfo : MonoBehaviour
     }   // 캐릭터 대쉬
 
     // Cast함수들은 애니메이션 이벤트에서 사용
-    public virtual void Cast_S(int i)
+    public virtual void Cast_S()
     {
         Debug.DrawRay(transform.position, transform.right * setAtk.length, Color.red);
         RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, setAtk.length, mask);
 
-        if (hit.collider != null) hit.collider.gameObject.GetComponent<CharaInfo>()._HP = setAtk.damage;
+        if (hit.collider != null)
+        {
+            hit.collider.gameObject.GetComponent<CharaInfo>()._HP = setAtk.damage;
+            Debug.Log("힛");
+        }
 
         // 공격이 나간 시점부터 딜레이 시작
-        StartCoroutine(MoveUnlock(setAtk.delay));
+        //StartCoroutine(MoveUnlock(setAtk.delay));
     }
 
-    public virtual void Cast_M(int i)
+    public virtual void Cast_M()
     {
         Debug.DrawRay(transform.position, transform.right * setAtk.length, Color.red);
-        RaycastHit2D[] hit = Physics2D.RaycastAll(transform.position, transform.right, setAtk.length, mask);
+        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, transform.right, setAtk.length, mask);
 
-        if (hit != null) return;
-        for (int k = 0; k < hit.Length; k++) hit[i].collider.gameObject.GetComponent<CharaInfo>()._HP = setAtk.damage;
+        if (hits != null) return;
+
+        foreach (var i in hits)
+        {
+            i.collider.gameObject.GetComponent<CharaInfo>()._HP = setAtk.damage;
+        }
 
         // 공격이 나간 시점부터 딜레이 시작
-        StartCoroutine(MoveUnlock(setAtk.delay));
+        //StartCoroutine(MoveUnlock(setAtk.delay));
     }
 
     protected virtual void Die()
     {
-        Debug.Log("사망");
+        ChangeAnim("Die");
     }
 
     public virtual void Hit()
@@ -132,7 +160,7 @@ public class CharaInfo : MonoBehaviour
     protected virtual void ChangeAnim(string name, bool isValue) { anim.SetBool(name, isValue); }
     protected virtual void ChangeAnim(string name) { anim.SetTrigger(name); }
 
-    IEnumerator MoveUnlock(float time)
+    protected IEnumerator MoveUnlock(float time)
     {
         isMoveLock = true;
 

@@ -4,19 +4,21 @@ using UnityEngine;
 
 public class Player : CharaInfo
 {
+    [Header("플레이어 설정")]
+    public bool isJumpCool;     // 점프 가능 상태, 거짓일 때 점프 가능
+    public float jumpDelay;     // 점프 딜레이
+
     public Attack[] atk;
 
-    public float setH = 1;     // 좌우 이동키 동시에 눌렀을 때 멈추지 않도록 하는 변수
+    float setH = 1;             // 좌우 이동키 동시에 눌렀을 때 멈추지 않도록 하는 변수
     
-
     [SerializeField]
-    bool isPlatform;    // 플랫폼 체크
+    bool isPlatform;            // 플랫폼 체크
     BoxCollider2D box2D;
     protected override void Awake()
     {
+        isPlayer = true;
         base.Awake();
-
-        mask = LayerMask.GetMask("Enemy");
 
         box2D = GetComponent<BoxCollider2D>();
     }
@@ -24,22 +26,29 @@ public class Player : CharaInfo
     protected override void Start()
     {
         isPlatform = false;
-
-        int x = -10;
     }
 
     protected override void Update()
     {
-        if(!isMoveLock) InputKey();
+        if (!isMoveLock) InputKey();
     }
 
     void InputKey()
     {
         bool isControl = false; // 조작 기록 확인
 
+        // Z 공격
+        if(Input.GetKeyDown(KeyCode.Z))
+        {
+            setAtk = atk[0];
+            ChangeAnim("Attack_Z");
+            StartCoroutine(MoveUnlock(setAtk.delay));
+            return;
+        }
+        
         // 점프
-        if(Input.GetKeyDown(KeyCode.Space) && isGround)
-        { Jump(); return; }
+        if (Input.GetKeyDown(KeyCode.Space) && isGround && !isJumpCool)
+        { Jump(); StartCoroutine(JumpCount()); return; }
 
         // 플랫폼에서 바닥으로 내려오기
         if(Input.GetKeyDown(KeyCode.DownArrow) && isPlatform)
@@ -115,6 +124,15 @@ public class Player : CharaInfo
     {
         // 플레이어 벽 끼임 방지
         box2D.size = new Vector2(0.09f, 0.25f);
+    }
+
+    IEnumerator JumpCount()
+    {
+        isJumpCool = true;
+
+        yield return new WaitForSeconds(jumpDelay);
+        
+        isJumpCool = false;
     }
 
     protected override void OnCollisionEnter2D(Collision2D collision)

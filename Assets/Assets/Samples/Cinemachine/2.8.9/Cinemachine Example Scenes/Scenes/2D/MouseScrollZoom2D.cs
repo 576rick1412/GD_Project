@@ -8,11 +8,10 @@ namespace Cinemachine.Examples
     public class MouseScrollZoom2D : MonoBehaviour
     {
         [Range(0, 10)]
-        public float ZoomMultiplier = 1f;
-        [Range(0, 100)]
-        public float MinZoom = 1f;
-        [Range(0, 100)]
-        public float MaxZoom = 50f;
+        public float ZoomMultiplier = 1f;   // 줌 속도 배율
+
+        float minZoom;
+        float maxZoom;
 
         CinemachineVirtualCamera m_VirtualCamera;
         float m_OriginalOrthoSize;
@@ -34,7 +33,7 @@ namespace Cinemachine.Examples
         {
             SaveDuringPlay.SaveDuringPlay.OnHotSave -= RestoreOriginalOrthographicSize;
         }
-        
+
         void RestoreOriginalOrthographicSize()
         {
             m_VirtualCamera.m_Lens.OrthographicSize = m_OriginalOrthoSize;
@@ -43,13 +42,38 @@ namespace Cinemachine.Examples
 
         void OnValidate()
         {
-            MaxZoom = Mathf.Max(MinZoom, MaxZoom);
+            maxZoom = Mathf.Max(minZoom, maxZoom);
+        }
+
+        void Start()
+        {
+            minZoom = GameManager.GM.minZoom;
+            maxZoom = GameManager.GM.maxZoom;
         }
 
         void Update()
         {
-            float zoom = m_VirtualCamera.m_Lens.OrthographicSize + Input.mouseScrollDelta.y * ZoomMultiplier;
-            m_VirtualCamera.m_Lens.OrthographicSize = Mathf.Clamp(zoom, MinZoom, MaxZoom);
+            float zoom = m_VirtualCamera.m_Lens.OrthographicSize + Input.mouseScrollDelta.y * ZoomMultiplier  *-1; 
+            m_VirtualCamera.m_Lens.OrthographicSize = Mathf.Clamp(zoom, minZoom, maxZoom);
+        }
+
+        public void MoveCanera(bool isZoom, float moveValue)
+        {
+            int value = isZoom ? 1 : -1;    // 줌 방향 설정
+
+            float zoom = m_VirtualCamera.m_Lens.OrthographicSize + moveValue * value;
+            m_VirtualCamera.m_Lens.OrthographicSize = Mathf.Clamp(zoom, minZoom, maxZoom);
+
+            if (isZoom)
+            {
+                if (m_VirtualCamera.m_Lens.OrthographicSize >= maxZoom)
+                    GameManager.GM.isZoom = false;
+            }
+            else
+            {
+                if (m_VirtualCamera.m_Lens.OrthographicSize <= minZoom)
+                    GameManager.GM.isZoom = false;
+            }
         }
     }
 }
