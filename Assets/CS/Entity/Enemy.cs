@@ -10,7 +10,7 @@ public class Enemy : CharaInfo
     bool isDie;                     // 사망 체크
 
     Transform PlayerPos;            // 플레이어 위치     
-    public float nowDis;                   // 적과 플레이어간의 거리
+    public float nowDis;            // 적과 플레이어간의 거리
     [SerializeField]
     float[] PEdis = new float[4];   // 플레이어 - 적 사이의 거리 저장
     /* PEdis 단계
@@ -35,7 +35,7 @@ public class Enemy : CharaInfo
     }
     protected override void Start()
     {
-
+        isDie = false;
     }
 
     protected override void Update()
@@ -44,22 +44,46 @@ public class Enemy : CharaInfo
         {
             return;
         }
+
         hpBar.fillAmount = _HP / setHP;
 
         EnemyControl();
     }
 
-
     void EnemyControl()
     {
-        nowDis = Vector2.Distance(PlayerPos.position, gameObject.transform.position);
+        RaycastHit2D hit;
+        float nowDis;
+        //nowDis = Vector2.Distance(PlayerPos.position, gameObject.transform.position);
 
         for (int i = 0; i < PEdis.Length; i++)
         {
+            // 앞뒤로 레이를 쏘고, 레이에 플레이어가 충돌했다면 다음단계로 넘어감
+            // 앞은 100% 길이, 뒤는 50% 길이로 발사
+
+            Debug.DrawRay(transform.position,  transform.right       *  PEdis[i]        , Color.red);
+            Debug.DrawRay(transform.position, (transform.right * -1) * (PEdis[i] * 0.5f), Color.red);
+
+            hit = Physics2D.Raycast(transform.position, transform.right, PEdis[i], mask);
+            if (hit.collider != null)
+            {
+                nowDis = hit.distance;
+                goto A;
+            }
+
+            hit = Physics2D.Raycast(transform.position, transform.right * -1, PEdis[i] * 0.5f, mask);
+            if (hit.collider != null)
+            {
+                nowDis = hit.distance;
+                goto A;
+            }
+
+            continue;
+            A:
             // 플레이어와 적 사이의 거리가 PEdis[ i ] 보다 가깝다면
             if (nowDis <= PEdis[i])
             {
-                FSM(i);
+                //FSM(i);
                 return;
             }
         }
@@ -95,9 +119,10 @@ public class Enemy : CharaInfo
     {
         base.Die();
 
-        BoxCollider2D box2D = GetComponent<BoxCollider2D>();
+        isDie = true;
 
-        rigid.bodyType = RigidbodyType2D.Kinematic;
+        BoxCollider2D box2D = GetComponent<BoxCollider2D>();
+        rigid.gravityScale = 0;
         box2D.enabled = false;
 
         Destroy(transform.Find("Enemy UI Canvas").gameObject);

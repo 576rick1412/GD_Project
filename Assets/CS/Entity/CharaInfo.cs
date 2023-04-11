@@ -121,11 +121,7 @@ public class CharaInfo : MonoBehaviour
         if (hit.collider != null)
         {
             hit.collider.gameObject.GetComponent<CharaInfo>()._HP = setAtk.damage;
-            Debug.Log("힛");
         }
-
-        // 공격이 나간 시점부터 딜레이 시작
-        //StartCoroutine(MoveUnlock(setAtk.delay));
     }
 
     public virtual void Cast_M()
@@ -133,15 +129,12 @@ public class CharaInfo : MonoBehaviour
         Debug.DrawRay(transform.position, transform.right * setAtk.length, Color.red);
         RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, transform.right, setAtk.length, mask);
 
-        if (hits != null) return;
+        if (hits == null) return;
 
         foreach (var i in hits)
         {
             i.collider.gameObject.GetComponent<CharaInfo>()._HP = setAtk.damage;
         }
-
-        // 공격이 나간 시점부터 딜레이 시작
-        //StartCoroutine(MoveUnlock(setAtk.delay));
     }
 
     protected virtual void Die()
@@ -151,7 +144,7 @@ public class CharaInfo : MonoBehaviour
 
     public virtual void Hit()
     {
-        Debug.Log("피격");
+        anim.SetTrigger("Hit");
     }
 
 

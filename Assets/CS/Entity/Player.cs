@@ -140,15 +140,30 @@ public class Player : CharaInfo
         base.OnCollisionEnter2D(collision);
 
         // 플랫폼을 올라왔을 시 내려올 수 있도록 참으로 변경
-        if (collision.gameObject.CompareTag("Platform")) isPlatform = true;
-    }
+        if (collision.gameObject.CompareTag("Platform"))
+        {
+            isPlatform = true;
+        }
 
-    void OnTriggerEnter2D(Collider2D collision)
-    {
         if (collision.gameObject.CompareTag("Ground"))
         {
             box2D.isTrigger = false;
             isPlatform = false;
+        }
+
+        if (collision.gameObject.CompareTag("EnemyHead"))
+        {
+            // 적 - 플레이어의 X값이 음수라면
+            if (collision.gameObject.transform.position.x - transform.position.x < 0)
+            {
+                Debug.Log("오");
+                rigid.AddForce(new Vector2( 1f, 0f) * speed, ForceMode2D.Impulse);
+            }
+            else
+            {
+                Debug.Log("왼");
+                rigid.AddForce(new Vector2( -1f, 0f) * speed, ForceMode2D.Impulse);
+            }
         }
     }
 
@@ -157,6 +172,9 @@ public class Player : CharaInfo
         base.OnCollisionExit2D(collision);
 
         // 플랫폼에서 내려왔을 시 바닥으로 꺼지지 않게 거짓으로 변경
-        if (collision.gameObject.CompareTag("Platform")) isPlatform = false;
+        if (collision.gameObject.CompareTag("Platform"))
+        {
+            isPlatform = false;
+        }
     }
 }
