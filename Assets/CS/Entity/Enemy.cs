@@ -5,11 +5,12 @@ using UnityEngine.UI;
 
 public class Enemy : CharaInfo
 {
+    [Header("공격 설정")]
+    public Attack[] atk;            // 공격 구조체 배열
+
     [Header("적 설정")]
     public float desTime;           // 사망 이후 삭제까지 걸리는 시간
     bool isDie;                     // 사망 체크
-
-    Transform PlayerPos;            // 플레이어 위치     
     public float nowDis;            // 적과 플레이어간의 거리
     [SerializeField]
     float[] PEdis = new float[4];   // 플레이어 - 적 사이의 거리 저장
@@ -31,7 +32,7 @@ public class Enemy : CharaInfo
                               transform.Find("Bar").
                               gameObject.GetComponent<Image>();
 
-        PlayerPos = GameObject.Find("Player").transform;
+        isMoveLock = false;
     }
     protected override void Start()
     {
@@ -46,6 +47,13 @@ public class Enemy : CharaInfo
         }
 
         hpBar.fillAmount = _HP / setHP;
+        hpBar.gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
+
+        // FSM이 실행중일 시 추가적인 적 컨트롤을 하지 않음
+        if (isMoveLock)
+        {
+            return;
+        }
 
         // 적 작동부
         EnemyControl();
@@ -86,6 +94,11 @@ public class Enemy : CharaInfo
                 FSM(i);
                 return;
             }
+            // 아무것도 해당하지 않는다면 애니메이션을 기본으로 바꾸고 리턴
+            else
+            {
+                ChangeAnim(0);
+            }
         }
     }   // 적 컨트롤 함수, 단계에 맞는 FSM 함수 실행
 
@@ -95,25 +108,22 @@ public class Enemy : CharaInfo
         {
             // 공격
             case 0:
-                //Debug.Log("공격");
                 StartCoroutine(EnemyAttack());
+                ChangeAnim(0);
                 break;
 
             // 추격
             case 1:
-                //Debug.Log("추격");
                 StartCoroutine(EnemyChase());
                 break;
 
             // 경계
             case 2:
-                //Debug.Log("경계");
                 StartCoroutine(EnemyBoundary());
                 break;
 
             // 포기
             case 3:
-                //Debug.Log("포기");
                 StartCoroutine(EnemyGiveUp());
                 break;
         }
@@ -121,21 +131,66 @@ public class Enemy : CharaInfo
 
     protected virtual IEnumerator EnemyAttack()
     {
+        isMoveLock = true;
+
+        setAtk = atk[0];
+        ChangeAnim("Attack_Z");
+
+        yield return new WaitForSeconds(setAtk.delay);
+
+        isMoveLock = false;
         yield return null;
     }
 
     protected virtual IEnumerator EnemyChase()
     {
+        isMoveLock = true;
+
+        float time = 0f;
+        while(time <= 3)
+        {
+            Transform playerPos = GameObject.Find("Player").transform;
+            time += Time.deltaTime;
+
+            float dis = playerPos.position.x - transform.position.x;
+            float dir = dis < 0 ? -1f : 1f;
+            float rot = dis < 0 ? -1f : 0f;
+
+            Move(dir);
+            Rotate(rot);
+
+            // 만약 플레이어와 가까워져 공격 범위 내에 들어온다면.....
+            if(Vector2.Distance(playerPos.position, transform.position) < PEdis[0])
+            {
+                goto A;
+            }
+
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
+
+        A:
+
+        isMoveLock = false;
         yield return null;
     }
 
     protected virtual IEnumerator EnemyBoundary()
     {
+        isMoveLock = true;
+
+
+
+        isMoveLock = false;
         yield return null;
     }
 
     protected virtual IEnumerator EnemyGiveUp()
     {
+        isMoveLock = true;
+
+
+
+        isMoveLock = false;
         yield return null;
     }
 
