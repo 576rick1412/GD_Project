@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class Player : CharaInfo
 {
+    [Header("조작키 설정")]
+    public KeyCodeManager KCM;  // 조작키 매니저
+
+    [Header("투척검")]
+    public Knife knife;
+
     [Header("플레이어 설정")]
     public bool isJumpCool;     // 점프 가능 상태, 거짓일 때 점프 가능
     public float jumpDelay;     // 점프 딜레이
@@ -11,7 +17,7 @@ public class Player : CharaInfo
     public Attack[] atk;
 
     float setH = 1;             // 좌우 이동키 동시에 눌렀을 때 멈추지 않도록 하는 변수
-    
+
     [SerializeField]
     bool isPlatform;            // 플랫폼 체크
     BoxCollider2D box2D;
@@ -37,25 +43,32 @@ public class Player : CharaInfo
     {
         bool isControl = false; // 조작 기록 확인
 
+        // 투척검 추척
+        if (Input.GetKey(KCM.THROWINGKNIFE) && !knife.knifeCool)
+        {
+            StartCoroutine(FireKnife());
+            return;
+        }
+
         // Z 공격
-        if(Input.GetKeyDown(KeyCode.Z))
+        if (Input.GetKeyDown(KCM.ATTACK_1))
         {
             setAtk = atk[0];
             ChangeAnim("Attack_Z");
             StartCoroutine(MoveUnlock(setAtk.delay));
             return;
         }
-        
+
         // 점프
-        if (Input.GetKeyDown(KeyCode.Space) && isGround && !isJumpCool)
-        { Jump(); StartCoroutine(JumpCount()); return; }
+        if (Input.GetKeyDown(KCM.JUMP) && isGround && !isJumpCool)
+        { Jump(); StartCoroutine(JumpDelay()); return; }
 
         // 플랫폼에서 바닥으로 내려오기
-        if(Input.GetKeyDown(KeyCode.DownArrow) && isPlatform)
+        if (Input.GetKeyDown(KCM.MOVE_DOWN) && isPlatform)
             StartCoroutine(Box2DEneable());
 
         // 달리기 & 대쉬
-        if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.LeftArrow))
+        if (Input.GetKey(KCM.MOVE_RIGHT) || Input.GetKey(KCM.MOVE_LEFT))
         {
             /*  < 달리기 입력의 대략적인 흐름 >
              * 1. 이동 키 입력 확인
@@ -82,24 +95,24 @@ public class Player : CharaInfo
             }
 
             // 두 개 다 눌렸을 때 기존 방향의 반대로 이동되도록
-            if (Input.GetKey(KeyCode.RightArrow) && Input.GetKey(KeyCode.LeftArrow))
+            if (Input.GetKey(KCM.MOVE_RIGHT) && Input.GetKey(KCM.MOVE_LEFT))
             {
                 // 동시 입력 중 대쉬
-                if (Input.GetKey(KeyCode.LeftShift))
-                { Dash(-setH); return; }    
-                
+                if (Input.GetKey(KCM.MOVE_DASH))
+                { Dash(-setH); return; }
+
                 // 일반 이동
                 Move(-setH);
                 Rotate(-setH);
-                return; 
+                return;
             }
 
-            if (Input.GetKey(KeyCode.LeftShift))
+            if (Input.GetKey(KCM.MOVE_DASH))
             { Dash(h); return; }    // 대쉬
-            
+
             // 일반 이동
             Rotate(h);
-            Move(h); 
+            Move(h);
             setH = h;
 
             isControl = true;
@@ -126,12 +139,35 @@ public class Player : CharaInfo
         box2D.size = new Vector2(0.09f, 0.25f);
     }
 
-    IEnumerator JumpCount()
+    IEnumerator FireKnife()
+    {
+        knife.knifeCool = true;
+
+        int rot = transform.rotation.y < 0 ? -180 : 1;
+
+        GameObject temp = Instantiate(knife.knife,
+                          transform.position,
+                          Quaternion.Euler(0, 180 * rot, 0));
+        temp.GetComponent<ThrowingKnife>().damage = knife.knifeDamage;
+
+        rot = rot == -180 ? -1 : 1;
+        temp.GetComponent<Rigidbody2D>().AddForce(
+            Vector2.right * rot * knife.knifeSpeed,
+            ForceMode2D.Impulse);
+
+        yield return new WaitForSeconds(knife.knifeTime);
+
+        knife.knifeCool = false;
+
+        Destroy(temp, knife.knifeDesDelay);
+    }
+
+    IEnumerator JumpDelay()
     {
         isJumpCool = true;
 
         yield return new WaitForSeconds(jumpDelay);
-        
+
         isJumpCool = false;
     }
 
@@ -144,26 +180,15 @@ public class Player : CharaInfo
         {
             isPlatform = true;
         }
+    }
 
+    // 플레이어의 isTrigger를 건드려서 내려오는거기때문에 트리거로 받음
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
         if (collision.gameObject.CompareTag("Ground"))
         {
             box2D.isTrigger = false;
             isPlatform = false;
-        }
-
-        if (collision.gameObject.CompareTag("EnemyHead"))
-        {
-            // 적 - 플레이어의 X값이 음수라면
-            if (collision.gameObject.transform.position.x - transform.position.x < 0)
-            {
-                Debug.Log("오");
-                rigid.AddForce(new Vector2( 1f, 0f) * speed, ForceMode2D.Impulse);
-            }
-            else
-            {
-                Debug.Log("왼");
-                rigid.AddForce(new Vector2( -1f, 0f) * speed, ForceMode2D.Impulse);
-            }
         }
     }
 
@@ -177,4 +202,30 @@ public class Player : CharaInfo
             isPlatform = false;
         }
     }
+}
+
+[System.Serializable]
+public struct Knife
+{
+    public GameObject knife;    // 투척검
+    public float knifeSpeed;    // 투척검 속도
+    public float knifeTime;     // 투척검 딜레이
+    public int knifeDamage;     // 투척검 데미지
+    public int knifeDesDelay;   // 투척검 자폭 딜레이
+
+    [HideInInspector]
+    public bool knifeCool;      // 투척검 쿨타임 중
+}
+
+[System.Serializable]
+public struct KeyCodeManager
+{
+    public KeyCode THROWINGKNIFE;
+    public KeyCode ATTACK_1;
+    public KeyCode ATTACK_2;
+    public KeyCode JUMP;
+    public KeyCode MOVE_LEFT;
+    public KeyCode MOVE_RIGHT;
+    public KeyCode MOVE_DOWN;
+    public KeyCode MOVE_DASH;
 }

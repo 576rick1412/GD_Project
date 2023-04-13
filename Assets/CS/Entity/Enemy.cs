@@ -47,6 +47,7 @@ public class Enemy : CharaInfo
 
         hpBar.fillAmount = _HP / setHP;
 
+        // 적 작동부
         EnemyControl();
     }
 
@@ -54,7 +55,6 @@ public class Enemy : CharaInfo
     {
         RaycastHit2D hit;
         float nowDis;
-        //nowDis = Vector2.Distance(PlayerPos.position, gameObject.transform.position);
 
         for (int i = 0; i < PEdis.Length; i++)
         {
@@ -83,36 +83,60 @@ public class Enemy : CharaInfo
             // 플레이어와 적 사이의 거리가 PEdis[ i ] 보다 가깝다면
             if (nowDis <= PEdis[i])
             {
-                //FSM(i);
+                FSM(i);
                 return;
             }
         }
     }   // 적 컨트롤 함수, 단계에 맞는 FSM 함수 실행
 
-    protected virtual void FSM(int fsmIdx)
+    void FSM(int fsmIdx)
     {
         switch (fsmIdx)
         {
             // 공격
             case 0:
-                Debug.Log("공격");
+                //Debug.Log("공격");
+                StartCoroutine(EnemyAttack());
                 break;
 
             // 추격
             case 1:
-                Debug.Log("추격");
+                //Debug.Log("추격");
+                StartCoroutine(EnemyChase());
                 break;
 
             // 경계
             case 2:
-                Debug.Log("경계");
+                //Debug.Log("경계");
+                StartCoroutine(EnemyBoundary());
                 break;
 
             // 포기
             case 3:
-                Debug.Log("포기");
+                //Debug.Log("포기");
+                StartCoroutine(EnemyGiveUp());
                 break;
         }
+    }
+
+    protected virtual IEnumerator EnemyAttack()
+    {
+        yield return null;
+    }
+
+    protected virtual IEnumerator EnemyChase()
+    {
+        yield return null;
+    }
+
+    protected virtual IEnumerator EnemyBoundary()
+    {
+        yield return null;
+    }
+
+    protected virtual IEnumerator EnemyGiveUp()
+    {
+        yield return null;
     }
 
     protected override void Die()
@@ -122,7 +146,6 @@ public class Enemy : CharaInfo
         isDie = true;
 
         BoxCollider2D box2D = GetComponent<BoxCollider2D>();
-        rigid.gravityScale = 0;
         box2D.enabled = false;
 
         Destroy(transform.Find("Enemy UI Canvas").gameObject);
