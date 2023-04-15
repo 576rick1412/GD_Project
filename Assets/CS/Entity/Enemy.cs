@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class Enemy : CharaInfo
 {
+    Image hpBar;            // 적 체력바
+
     [Header("공격 설정")]
     public Attack[] atk;            // 공격 구조체 배열
 
@@ -21,8 +23,10 @@ public class Enemy : CharaInfo
      * 3 : 포기 - 원래 지점으로 이동
      */
 
-    Image hpBar;            // 적 체력바
+    // 추격 설정
+    Transform enemyStartPos;        // 적의 처음 위치 저장
 
+    
     protected override void Awake()
     {
         base.Awake();
@@ -32,7 +36,7 @@ public class Enemy : CharaInfo
                               transform.Find("Bar").
                               gameObject.GetComponent<Image>();
 
-        isMoveLock = false;
+        enemyStartPos = this.gameObject.transform;
     }
     protected override void Start()
     {
@@ -87,6 +91,9 @@ public class Enemy : CharaInfo
             }
 
             continue;
+
+            //==================================================================
+
             A:
             // 플레이어와 적 사이의 거리가 PEdis[ i ] 보다 가깝다면
             if (nowDis <= PEdis[i])
@@ -94,14 +101,13 @@ public class Enemy : CharaInfo
                 FSM(i);
                 return;
             }
-            // 아무것도 해당하지 않는다면 애니메이션을 기본으로 바꾸고 리턴
-            else
-            {
-                ChangeAnim(0);
-            }
         }
-    }   // 적 컨트롤 함수, 단계에 맞는 FSM 함수 실행
 
+        // 아무것도 해당하지 않는다면 애니메이션을 기본으로 바꾸고 리턴
+        ChangeAnim(0);
+    }
+
+    // 적 컨트롤 함수, 단계에 맞는 FSM 함수 실행
     void FSM(int fsmIdx)
     {
         switch (fsmIdx)
@@ -156,6 +162,7 @@ public class Enemy : CharaInfo
             float dir = dis < 0 ? -1f : 1f;
             float rot = dis < 0 ? -1f : 0f;
 
+            Jump();
             Move(dir);
             Rotate(rot);
 
@@ -194,6 +201,20 @@ public class Enemy : CharaInfo
         yield return null;
     }
 
+    protected override void Jump()
+    {
+        RaycastHit2D hit;
+        float castLength = 1.4f;
+
+        Debug.DrawRay(transform.position, transform.right * castLength, Color.red);
+
+        hit = Physics2D.Raycast(transform.position, transform.right, castLength, LayerMask.GetMask("Ground"));
+        if (hit.collider != null)
+        {
+            base.Jump();
+        }
+    }
+
     protected override void Die()
     {
         base.Die();
@@ -202,6 +223,7 @@ public class Enemy : CharaInfo
 
         BoxCollider2D box2D = GetComponent<BoxCollider2D>();
         box2D.enabled = false;
+        rigid.bodyType = RigidbodyType2D.Kinematic;
 
         Destroy(transform.Find("Enemy UI Canvas").gameObject);
         Destroy(gameObject, desTime);

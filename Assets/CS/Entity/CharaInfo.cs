@@ -109,6 +109,8 @@ public class CharaInfo : MonoBehaviour
         if (h < 0) rigid.velocity = Vector2.left * speed * 2f;
         else rigid.velocity = Vector2.right * speed * 2f;
 
+        ChangeAnim(0);
+        ChangeAnim("Dash");
         StartCoroutine(MoveUnlock(0.8f));
     }   // 캐릭터 대쉬
 
@@ -139,6 +141,7 @@ public class CharaInfo : MonoBehaviour
 
     protected virtual void Die()
     {
+        isMoveLock = true;
         ChangeAnim("Die");
     }
 
@@ -159,6 +162,8 @@ public class CharaInfo : MonoBehaviour
 
         yield return new WaitForSeconds(time);
         isMoveLock = false;
+
+        rigid.velocity = Vector2.zero;
 
         yield return null;
     }

@@ -36,7 +36,12 @@ public class Player : CharaInfo
 
     protected override void Update()
     {
-        if (!isMoveLock) InputKey();
+        if (isMoveLock)
+        {
+            return;
+        }
+
+        InputKey();
     }
 
     void InputKey()
