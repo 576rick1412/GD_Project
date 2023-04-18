@@ -20,13 +20,13 @@ public class Enemy : CharaInfo
      * 0 : 공격 - 플레이어 공격
      * 1 : 추격 - 플레이어 추격
      * 2 : 경계 - 돌아다니며 플레이어 탐색
-     * 3 : 포기 - 원래 지점으로 이동
      */
 
-    // 추격 설정
-    Transform enemyStartPos;        // 적의 처음 위치 저장
+    // 경계 설정
+    protected float boundarySpeed = 3f; // 적 경계 속도
+    public Transform[] wayPoints;       // 적 이동 경로
+    public int wayIndex;                // 직 이동 경로 인덱스
 
-    
     protected override void Awake()
     {
         base.Awake();
@@ -35,8 +35,6 @@ public class Enemy : CharaInfo
                               transform.Find("HP").
                               transform.Find("Bar").
                               gameObject.GetComponent<Image>();
-
-        enemyStartPos = this.gameObject.transform;
     }
     protected override void Start()
     {
@@ -71,10 +69,10 @@ public class Enemy : CharaInfo
         for (int i = 0; i < PEdis.Length; i++)
         {
             // 앞뒤로 레이를 쏘고, 레이에 플레이어가 충돌했다면 다음단계로 넘어감
-            // 앞은 100% 길이, 뒤는 50% 길이로 발사
+            // 앞은 100% 길이, 뒤는 60% 길이로 발사
 
             Debug.DrawRay(transform.position,  transform.right       *  PEdis[i]        , Color.red);
-            Debug.DrawRay(transform.position, (transform.right * -1) * (PEdis[i] * 0.5f), Color.red);
+            Debug.DrawRay(transform.position, (transform.right * -1) * (PEdis[i] * 0.6f), Color.red);
 
             hit = Physics2D.Raycast(transform.position, transform.right, PEdis[i], mask);
             if (hit.collider != null)
@@ -103,8 +101,8 @@ public class Enemy : CharaInfo
             }
         }
 
-        // 아무것도 해당하지 않는다면 애니메이션을 기본으로 바꾸고 리턴
-        ChangeAnim(0);
+        // 아무것도 해당하지 않는다면 경계 상태로 전환
+        FSM(2);
     }
 
     // 적 컨트롤 함수, 단계에 맞는 FSM 함수 실행
@@ -126,11 +124,6 @@ public class Enemy : CharaInfo
             // 경계
             case 2:
                 StartCoroutine(EnemyBoundary());
-                break;
-
-            // 포기
-            case 3:
-                StartCoroutine(EnemyGiveUp());
                 break;
         }
     }
@@ -183,16 +176,32 @@ public class Enemy : CharaInfo
     {
         isMoveLock = true;
 
+        ChangeAnim(1);
 
+        Jump();
 
-        isMoveLock = false;
-        yield return null;
-    }
-    protected virtual IEnumerator EnemyGiveUp()
-    {
-        isMoveLock = true;
+        // 회전
+        float dir = wayPoints[wayIndex].position.x < transform.position.x ? -1f : 1f;
+        Rotate(dir);
 
+        // 목표 지점에 도달했다면......다음 목표지점 지정
+        // 아닐경우 목표지점으로 이동
+        float dis = Mathf.Abs(wayPoints[wayIndex].position.x - transform.position.x);
+        if (dis <= 0.1f)
+        {
+            if (wayIndex + 1 == wayPoints.Length) { wayIndex = 0; }
+            else { wayIndex++; }
+        }
+        else
+        {
+            transform.Translate(Vector3.right * boundarySpeed * Time.deltaTime);
 
+            /*
+            Vector2 velo = Vector2.zero;
+            transform.position =
+            Vector2.MoveTowards(transform.position, wayPoints[wayIndex].position, boundarySpeed * Time.deltaTime);
+            */
+        }
 
         isMoveLock = false;
         yield return null;

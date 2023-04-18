@@ -102,6 +102,7 @@ public class CharaInfo : MonoBehaviour
     {
         rigid.AddForce(Vector2.up * jumpValue, ForceMode2D.Impulse);
 
+        isGround = false;
         ChangeAnim("Jump");  // 점프 애니메이션으로 변경
     }   // 캐릭터 점프
     protected virtual void Dash(float h)
@@ -142,6 +143,7 @@ public class CharaInfo : MonoBehaviour
     protected virtual void Die()
     {
         isMoveLock = true;
+        StopAllCoroutines();
         ChangeAnim("Die");
     }
 
