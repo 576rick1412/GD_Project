@@ -148,19 +148,21 @@ public class Player : CharaInfo
     {
         knife.knifeCool = true;
 
-        int rot = transform.rotation.y < 0 ? -180 : 1;
-
+        // 생성 부분
+        int rot = setH < 0 ? 0 : -1;
         GameObject temp = Instantiate(knife.knife,
                           transform.position,
                           Quaternion.Euler(0, 180 * rot, 0));
-        temp.GetComponent<ThrowingKnife>().damage = knife.knifeDamage;
+        temp.GetComponent<ThrowingKnife>().damage = knife.damage;
 
-        rot = rot == -180 ? -1 : 1;
+        // 발사 부분
+        if (rot == 0) rot = 1;
+        float ran = Random.Range(-knife.sigma, knife.sigma);
         temp.GetComponent<Rigidbody2D>().AddForce(
-            Vector2.right * rot * knife.knifeSpeed,
+            new Vector3(rot * -1 * knife.speed, ran, 0),
             ForceMode2D.Impulse);
 
-        yield return new WaitForSeconds(knife.knifeTime);
+        yield return new WaitForSeconds(knife.coolTime);
 
         knife.knifeCool = false;
 
@@ -213,10 +215,11 @@ public class Player : CharaInfo
 public struct Knife
 {
     public GameObject knife;    // 투척검
-    public float knifeSpeed;    // 투척검 속도
-    public float knifeTime;     // 투척검 딜레이
-    public int knifeDamage;     // 투척검 데미지
-    public int knifeDesDelay;   // 투척검 자폭 딜레이
+    public int   damage;        // 투척검 데미지
+    public float speed;         // 투척검 속도
+    public float coolTime;      // 투척검 쿨타임
+    public float knifeDesDelay; // 투척검 자폭 딜레이
+    public float sigma;         // 투척검 시그마값
 
     [HideInInspector]
     public bool knifeCool;      // 투척검 쿨타임 중

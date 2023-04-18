@@ -147,7 +147,6 @@ public class Enemy : CharaInfo
         isMoveLock = false;
         yield return null;
     }
-
     protected virtual IEnumerator EnemyChase()
     {
         isMoveLock = true;
@@ -180,7 +179,6 @@ public class Enemy : CharaInfo
         isMoveLock = false;
         yield return null;
     }
-
     protected virtual IEnumerator EnemyBoundary()
     {
         isMoveLock = true;
@@ -190,7 +188,6 @@ public class Enemy : CharaInfo
         isMoveLock = false;
         yield return null;
     }
-
     protected virtual IEnumerator EnemyGiveUp()
     {
         isMoveLock = true;
@@ -203,18 +200,17 @@ public class Enemy : CharaInfo
 
     protected override void Jump()
     {
-        RaycastHit2D hit;
         float castLength = 1.4f;
 
+        RaycastHit2D hit;
         Debug.DrawRay(transform.position, transform.right * castLength, Color.red);
-
         hit = Physics2D.Raycast(transform.position, transform.right, castLength, LayerMask.GetMask("Ground"));
         if (hit.collider != null)
         {
+            rigid.bodyType = RigidbodyType2D.Dynamic;
             base.Jump();
         }
     }
-
     protected override void Die()
     {
         base.Die();
@@ -227,5 +223,35 @@ public class Enemy : CharaInfo
 
         Destroy(transform.Find("Enemy UI Canvas").gameObject);
         Destroy(gameObject, desTime);
+    }
+
+    //===============================================================
+    protected override void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Platform"))
+        {
+            isGround = true;
+            ChangeAnim("isGround", isGround);
+
+            rigid.bodyType = RigidbodyType2D.Kinematic;
+            GetComponent<BoxCollider2D>().isTrigger = true;
+        }
+    }
+    protected virtual void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Platform"))
+        {
+            isGround = false;
+            ChangeAnim("isGround", isGround);
+
+            rigid.bodyType = RigidbodyType2D.Dynamic;
+            GetComponent<BoxCollider2D>().isTrigger = false;
+        }
+    }
+
+    //=======================< 안쓰는거 비움 >========================
+    protected override void OnCollisionExit2D(Collision2D collision)
+    {
+
     }
 }
