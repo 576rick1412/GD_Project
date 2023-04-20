@@ -119,6 +119,18 @@ public class GameManager : MonoBehaviour
         // 설정창 - 게임플레이 파트
         public bool isKorean;
     }
+
+    [Serializable]
+    public class ItemDB
+    {
+        // AES 암호화 키
+        [HideInInspector]
+        public string
+            key = "Y@nGhLz*UjX#pKmQxV$cEiFwS";
+
+
+
+    }
 }
 
 namespace AesEncryptionNS.Con
