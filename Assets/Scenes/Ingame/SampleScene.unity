@@ -5492,6 +5492,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4a38f0f56dac7a46b5f877acba283bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GD: {fileID: 11400000, guid: 2e87c04e34cb8684d8ae8b353ed91623, type: 2}
   minZoom: 3
   maxZoom: 8
   isZoom: 0

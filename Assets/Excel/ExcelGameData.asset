@@ -1,0 +1,343 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 8
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f78b73237f6473d4a90cfbf2f52ce4c7, type: 3}
+  m_Name: ExcelGameData
+  m_EditorClassIdentifier: 
+  ItemDB_KR:
+  - code: 1
+    name: "\uD558\uAE09 HP \uD3EC\uC158"
+    tear: 1
+    type: "\uC18C\uBE44"
+    count: 0
+    value: 20
+    cool: 10
+    mainDes: "\uC0AC\uC6A9 \uC2DC HP\uB97C \uC18C\uD3ED \uD68C\uBCF5\uD55C\uB2E4"
+    dropDes: "\uB098\uBB47\uAC00\uC9C0 * 1 / \uC124\uC775\uC740 \uC5F4\uB9E4 * 2
+      / \uC124\uC775\uC740 \uAF43 * 1"
+  - code: 2
+    name: "\uC911\uAE09 HP \uD3EC\uC158"
+    tear: 2
+    type: "\uC18C\uBE44"
+    count: 0
+    value: 40
+    cool: 10
+    mainDes: "\uC0AC\uC6A9 \uC2DC HP\uB97C \uD68C\uBCF5\uD55C\uB2E4"
+    dropDes: "\uB098\uBB47\uAC00\uC9C0 * 2 / \uC124\uC775\uC740 \uC5F4\uB9E4 * 4
+      / \uC124\uC775\uC740 \uAF43 * 2"
+  - code: 3
+    name: "\uC0C1\uAE09 HP \uD3EC\uC158"
+    tear: 3
+    type: "\uC18C\uBE44"
+    count: 0
+    value: 60
+    cool: 10
+    mainDes: "\uC0AC\uC6A9 \uC2DC HP\uB97C \uB300\uD3ED \uD68C\uBCF5\uD55C\uB2E4"
+    dropDes: "\uB098\uBB47\uAC00\uC9C0 * 3 / \uC124\uC775\uC740 \uC5F4\uB9E4 * 6
+      / \uC124\uC775\uC740 \uAF43 * 3"
+  - code: 4
+    name: "\uD558\uAE09 MP \uD3EC\uC158"
+    tear: 1
+    type: "\uC18C\uBE44"
+    count: 0
+    value: 20
+    cool: 0
+    mainDes: "\uC0AC\uC6A9 \uC2DC MP\uB97C \uC18C\uD3ED \uD68C\uBCF5\uD55C\uB2E4"
+    dropDes: "\uB098\uBB47\uAC00\uC9C0 * 1 / \uC124\uC775\uC740 \uC5F4\uB9E4 * 1
+      / \uC124\uC775\uC740 \uAF43 * 2"
+  - code: 5
+    name: "\uC911\uAE09 MP \uD3EC\uC158"
+    tear: 2
+    type: "\uC18C\uBE44"
+    count: 0
+    value: 40
+    cool: 0
+    mainDes: "\uC0AC\uC6A9 \uC2DC MP\uB97C \uD68C\uBCF5\uD55C\uB2E4"
+    dropDes: "\uB098\uBB47\uAC00\uC9C0 * 2 / \uC124\uC775\uC740 \uC5F4\uB9E4 * 2
+      / \uC124\uC775\uC740 \uAF43 * 4"
+  - code: 6
+    name: "\uC0C1\uAE09 MP \uD3EC\uC158"
+    tear: 3
+    type: "\uC18C\uBE44"
+    count: 0
+    value: 60
+    cool: 0
+    mainDes: "\uC0AC\uC6A9 \uC2DC MP\uB97C \uB300\uD3ED \uD68C\uBCF5\uD55C\uB2E4"
+    dropDes: "\uB098\uBB47\uAC00\uC9C0 * 3 / \uC124\uC775\uC740 \uC5F4\uB9E4 * 3
+      / \uC124\uC775\uC740 \uAF43 * 6"
+  - code: 7
+    name: "\uCD5C\uC0C1\uAE09 \uBB3C\uC758 \uD3EC\uC158"
+    tear: 4
+    type: "\uC18C\uBE44"
+    count: 0
+    value: 100
+    cool: 0
+    mainDes: "\uC0AC\uC6A9 \uC2DC HP/MP\uB97C \uCD08\uB300\uD3ED \uD68C\uBCF5\uD55C\uB2E4\n\uC77C\uC815\uC2DC\uAC04
+      \uCCB4\uB825\uC744 \uB298\uB824\uC8FC\uACE0\n\uBB3C\uC18D\uC131 \uC801\uC758
+      \uB370\uBBF8\uC9C0\uB97C \uC808\uBC18\uC73C\uB85C \uAC10\uC18C"
+    dropDes: "\uC0C1\uAE09 HP \uD3EC\uC158 * 1 / \uC0C1\uAE09 MP \uD3EC\uC158 * 1
+      / \uBE14\uB8E8\uBCA8 * 3"
+  - code: 8
+    name: "\uCD5C\uC0C1\uAE09 \uBD88\uC758 \uD3EC\uC158"
+    tear: 4
+    type: "\uC18C\uBE44"
+    count: 0
+    value: 100
+    cool: 0
+    mainDes: "\uC0AC\uC6A9 \uC2DC HP/MP\uB97C \uCD08\uB300\uD3ED \uD68C\uBCF5\uD55C\uB2E4\n\uC77C\uC815\uC2DC\uAC04
+      \uB370\uBBF8\uC9C0\uB97C \uC99D\uAC00\uC2DC\uD0A4\uACE0\n\uBD88\uC18D\uC131
+      \uC801\uC758 \uB370\uBBF8\uC9C0\uB97C \uC808\uBC18\uC73C\uB85C \uAC10\uC18C"
+    dropDes: "\uC0C1\uAE09 HP \uD3EC\uC158 * 1 / \uC0C1\uAE09 MP \uD3EC\uC158 * 1
+      / \uBE14\uB7EC\uB514\uBA54\uB9AC * 3"
+  - code: 9
+    name: "\uCD5C\uC0C1\uAE09 \uC2E0\uC131\uC758 \uD3EC\uC158"
+    tear: 4
+    type: "\uC18C\uBE44"
+    count: 0
+    value: 100
+    cool: 0
+    mainDes: "\uC0AC\uC6A9 \uC2DC HP/MP\uB97C \uCD08\uB300\uD3ED \uD68C\uBCF5\uD55C\uB2E4\n\uC77C\uC815\uC2DC\uAC04
+      \uB9C8\uB098\uB97C \uB298\uB824\uC8FC\uACE0\n\uC2E0\uC131\uC18D\uC131 \uC801\uC758
+      \uB370\uBBF8\uC9C0\uB97C \uC808\uBC18\uC73C\uB85C \uAC10\uC18C"
+    dropDes: "\uC0C1\uAE09 HP \uD3EC\uC158 * 1 / \uC0C1\uAE09 MP \uD3EC\uC158 * 1
+      / \uC6B0\uB2F4\uBC14\uB77C * 3"
+  - code: 10
+    name: "\uCD5C\uC0C1\uAE09 \uBC14\uB78C\uC758 \uD45C\uC158"
+    tear: 4
+    type: "\uC18C\uBE44"
+    count: 0
+    value: 100
+    cool: 0
+    mainDes: "\uC0AC\uC6A9 \uC2DC HP/MP\uB97C \uCD08\uB300\uD3ED \uD68C\uBCF5\uD55C\uB2E4\n\uC77C\uC815\uC2DC\uAC04
+      \uC774\uB3D9\uC18D\uB3C4\uAC00 \uB298\uC5B4\uB098\uACE0\n\uBC14\uB78C\uC18D\uC131
+      \uC801\uC758 \uB370\uBBF8\uC9C0\uB97C \uC808\uBC18\uC73C\uB85C \uAC10\uC18C"
+    dropDes: "\uC0C1\uAE09 HP \uD3EC\uC158 * 1 / \uC0C1\uAE09 MP \uD3EC\uC158 * 1
+      / \uC544\uB124\uBAA8\uB124 * 3"
+  - code: 11
+    name: "\uC131\uC218"
+    tear: 2
+    type: "\uC18C\uBE44"
+    count: 0
+    value: 60
+    cool: 0
+    mainDes: "\uC0AC\uC6A9 \uC2DC \uC77C\uC815\uC2DC\uAC04 \uC2E0\uC131\uC9C0\uC5ED
+      \uC801\uC758 \uC601\uD63C\uC744 \uD0C0\uACA9\uD560 \uC218 \uC788\uB2E4."
+    dropDes: "\uB098\uBB47\uAC00\uC9C0 * 2 / \uC6B0\uB2F4\uBC14\uB77C * 3"
+  - code: 12
+    name: "\uB098\uBB47\uAC00\uC9C0"
+    tear: 1
+    type: "\uC7AC\uB8CC"
+    count: 0
+    value: 0
+    cool: 0
+    mainDes: "\uD3EC\uC158\uC744 \uC870\uD569\uD558\uB294\uB370 \uC0AC\uC6A9\uD55C\uB2E4"
+    dropDes: "\uC544\uBB34\uC9C0\uC5ED\uC758 \uC218\uD480\uC744 \uACF5\uACA9 \uC2DC
+      \uD68D\uB4DD \uAC00\uB2A5"
+  - code: 13
+    name: "\uC124\uC775\uC740 \uC5F4\uB9E4"
+    tear: 1
+    type: "\uC7AC\uB8CC"
+    count: 0
+    value: 0
+    cool: 0
+    mainDes: "\uD3EC\uC158\uC744 \uC870\uD569\uD558\uB294\uB370 \uC0AC\uC6A9\uD55C\uB2E4"
+    dropDes: "\uC544\uBB34\uC9C0\uC5ED\uC758 \uC218\uD480\uC744 \uACF5\uACA9 \uC2DC
+      \uD68D\uB4DD \uAC00\uB2A5"
+  - code: 14
+    name: "\uC124\uC775\uC740 \uAF43"
+    tear: 1
+    type: "\uC7AC\uB8CC"
+    count: 0
+    value: 0
+    cool: 0
+    mainDes: "\uD3EC\uC158\uC744 \uC870\uD569\uD558\uB294\uB370 \uC0AC\uC6A9\uD55C\uB2E4"
+    dropDes: "\uC544\uBB34\uC9C0\uC5ED\uC758 \uC77C\uBC18 \uAF43\uC744 \uACF5\uACA9
+      \uC2DC \uD68D\uB4DD \uAC00\uB2A5"
+  - code: 15
+    name: "\uBE14\uB8E8\uBCA8"
+    tear: 2
+    type: "\uC7AC\uB8CC"
+    count: 0
+    value: 0
+    cool: 0
+    mainDes: "\uD2B9\uC218 \uD3EC\uC158\uC744 \uC870\uD569\uD558\uB294\uB370 \uC0AC\uC6A9\uD55C\uB2E4"
+    dropDes: "\uBB3C\uC9C0\uC5ED\uC758 \uD2B9\uC218 \uAF43\uC744 \uACF5\uACA9 \uC2DC
+      \uD68D\uB4DD \uAC00\uB2A5"
+  - code: 16
+    name: "\uBE14\uB7EC\uB514\uBA54\uB9AC"
+    tear: 2
+    type: "\uC7AC\uB8CC"
+    count: 0
+    value: 0
+    cool: 0
+    mainDes: "\uD2B9\uC218 \uD3EC\uC158\uC744 \uC870\uD569\uD558\uB294\uB370 \uC0AC\uC6A9\uD55C\uB2E4"
+    dropDes: "\uBD88\uC9C0\uC5ED\uC758 \uD2B9\uC218 \uAF43\uC744 \uACF5\uACA9 \uC2DC
+      \uD68D\uB4DD \uAC00\uB2A5"
+  - code: 17
+    name: "\uC6B0\uB2F4\uBC14\uB77C"
+    tear: 2
+    type: "\uC7AC\uB8CC"
+    count: 0
+    value: 0
+    cool: 0
+    mainDes: "\uD2B9\uC218 \uD3EC\uC158\uC744 \uC870\uD569\uD558\uB294\uB370 \uC0AC\uC6A9\uD55C\uB2E4"
+    dropDes: "\uC2E0\uC131\uC9C0\uC5ED\uC758 \uD2B9\uC218 \uAF43\uC744 \uACF5\uACA9
+      \uC2DC \uD68D\uB4DD \uAC00\uB2A5"
+  - code: 18
+    name: "\uC544\uB124\uBAA8\uB124"
+    tear: 2
+    type: "\uC7AC\uB8CC"
+    count: 0
+    value: 0
+    cool: 0
+    mainDes: "\uD2B9\uC218 \uD3EC\uC158\uC744 \uC870\uD569\uD558\uB294\uB370 \uC0AC\uC6A9\uD55C\uB2E4"
+    dropDes: "\uBC14\uB78C\uC9C0\uC5ED\uC758 \uD2B9\uC218 \uAF43\uC744 \uACF5\uACA9
+      \uC2DC \uD68D\uB4DD \uAC00\uB2A5"
+  - code: 19
+    name: "\uC544\uD2C0\uB77C\uC2A4"
+    tear: 3
+    type: "\uC7A5\uC2E0\uAD6C"
+    count: 0
+    value: 46
+    cool: 1
+    mainDes: 
+    dropDes: "\uBB3C\uC9C0\uC5ED \uBCF4\uC2A4 \uCC98\uCE58 \uC2DC \uD68D\uB4DD \uAC00\uB2A5"
+  - code: 20
+    name: "\uD50C\uB808\uC784\uC6CC\uCEE4"
+    tear: 3
+    type: "\uC7A5\uC2E0\uAD6C"
+    count: 0
+    value: 120
+    cool: 2
+    mainDes: 
+    dropDes: "\uBD88\uC9C0\uC5ED \uBCF4\uC2A4 \uCC98\uCE58 \uC2DC \uD68D\uB4DD \uAC00\uB2A5"
+  - code: 21
+    name: "\uB514\uBC14\uC778\uB808\uD034\uC5E0"
+    tear: 3
+    type: "\uC7A5\uC2E0\uAD6C"
+    count: 0
+    value: 38
+    cool: 0.8
+    mainDes: 
+    dropDes: "\uC2E0\uC131\uC9C0\uC5ED \uBCF4\uC2A4 \uCC98\uCE58 \uC2DC \uD68D\uB4DD
+      \uAC00\uB2A5"
+  - code: 22
+    name: "\uC2A4\uCE74\uC774\uD3F4"
+    tear: 3
+    type: "\uC7A5\uC2E0\uAD6C"
+    count: 0
+    value: 22
+    cool: 0.5
+    mainDes: 
+    dropDes: "\uBC14\uB78C\uC9C0\uC5ED \uBCF4\uC2A4 \uCC98\uCE58 \uC2DC \uD68D\uB4DD
+      \uAC00\uB2A5"
+  - code: 23
+    name: "\uC2A4\uD399\uD2B8\uB7F4"
+    tear: 2
+    type: "\uC7A5\uC2E0\uAD6C"
+    count: 0
+    value: 35
+    cool: 1
+    mainDes: 
+    dropDes: "\uB9F5\uC5D0\uC11C \uD68D\uB4DD"
+  - code: 24
+    name: "\uBE14\uB799\uB098\uC774\uD2B8"
+    tear: 2
+    type: "\uC7A5\uC2E0\uAD6C"
+    count: 0
+    value: 25
+    cool: 0.8
+    mainDes: 
+    dropDes: "\uB9F5\uC5D0\uC11C \uD68D\uB4DD"
+  - code: 25
+    name: "\uBE14\uB7EC\uB4DC\uB808\uC774\uC800"
+    tear: 2
+    type: "\uC7A5\uC2E0\uAD6C"
+    count: 0
+    value: 15
+    cool: 0.5
+    mainDes: 
+    dropDes: "\uB9F5\uC5D0\uC11C \uD68D\uB4DD"
+  - code: 26
+    name: "\uB124\uC774\uCC98"
+    tear: 1
+    type: "\uC7A5\uC2E0\uAD6C"
+    count: 0
+    value: 30
+    cool: 1
+    mainDes: 
+    dropDes: "\uB9F5\uC5D0\uC11C \uD68D\uB4DD"
+  - code: 27
+    name: "\uD15C\uD37C"
+    tear: 1
+    type: "\uC7A5\uC2E0\uAD6C"
+    count: 0
+    value: 20
+    cool: 0.8
+    mainDes: 
+    dropDes: "\uB9F5\uC5D0\uC11C \uD68D\uB4DD"
+  - code: 28
+    name: "\uC2A4\uD1B0\uB80C\uC800"
+    tear: 1
+    type: "\uC7A5\uC2E0\uAD6C"
+    count: 0
+    value: 12
+    cool: 0.5
+    mainDes: 
+    dropDes: "\uB9F5\uC5D0\uC11C \uD68D\uB4DD"
+  - code: 29
+    name: "\uCD5C\uC885\uBCF4\uC2A4 \uC5F4\uC1E0"
+    tear: 4
+    type: "\uC5D0\uD53D"
+    count: 0
+    value: 0
+    cool: 0
+    mainDes: "\uBCF4\uC2A4\uBC29\uC758 \uBB38\uC744 \uC5F4 \uC218 \uC788\uC74C"
+    dropDes: "\uBC14\uB2E4\uC758 \uC815\uC218 * 1 / \uB4DC\uB798\uACE4\uD558\uD2B8
+      * 1 / \uC2E0\uC0C1 * 1 / \uD558\uD53C\uC758 \uC54C * 1"
+  - code: 30
+    name: "\uBC14\uB2E4\uC758 \uC815\uC218"
+    tear: 4
+    type: "\uC5D0\uD53D"
+    count: 0
+    value: 0
+    cool: 0
+    mainDes: "\uCD5C\uC885\uBCF4\uC2A4 \uC5F4\uC1E0 \uC870\uD569\uC5D0 \uC0AC\uC6A9\uB428"
+    dropDes: "\uBB3C\uC9C0\uC5ED \uBCF4\uC2A4 \uCC98\uCE58 \uC2DC \uD68D\uB4DD \uAC00\uB2A5"
+  - code: 31
+    name: "\uB4DC\uB798\uACE4\uD558\uB4DC"
+    tear: 4
+    type: "\uC5D0\uD53D"
+    count: 0
+    value: 0
+    cool: 0
+    mainDes: "\uCD5C\uC885\uBCF4\uC2A4 \uC5F4\uC1E0 \uC870\uD569\uC5D0 \uC0AC\uC6A9\uB428"
+    dropDes: "\uBD88\uC9C0\uC5ED \uBCF4\uC2A4 \uCC98\uCE58 \uC2DC \uD68D\uB4DD \uAC00\uB2A5"
+  - code: 32
+    name: "\uC2E0\uC0C1"
+    tear: 4
+    type: "\uC5D0\uD53D"
+    count: 0
+    value: 0
+    cool: 0
+    mainDes: "\uCD5C\uC885\uBCF4\uC2A4 \uC5F4\uC1E0 \uC870\uD569\uC5D0 \uC0AC\uC6A9\uB428"
+    dropDes: "\uC2E0\uC131\uC9C0\uC5ED \uBCF4\uC2A4 \uCC98\uCE58 \uC2DC \uD68D\uB4DD
+      \uAC00\uB2A5"
+  - code: 33
+    name: "\uD558\uD53C\uC758 \uC54C"
+    tear: 4
+    type: "\uC5D0\uD53D"
+    count: 0
+    value: 0
+    cool: 0
+    mainDes: "\uCD5C\uC885\uBCF4\uC2A4 \uC5F4\uC1E0 \uC870\uD569\uC5D0 \uC0AC\uC6A9\uB428"
+    dropDes: "\uBC14\uB78C\uC9C0\uC5ED \uBCF4\uC2A4 \uCC98\uCE58 \uC2DC \uD68D\uB4DD
+      \uAC00\uB2A5"

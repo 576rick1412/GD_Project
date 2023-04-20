@@ -11,6 +11,7 @@ using AesEncryptionNS.Con;
 public class GameManager : MonoBehaviour
 {
     public static GameManager GM;
+    public ExcelGameData GD;
 
     // Ä«¸Þ¶ó ÁÜ
     public float minZoom;
@@ -44,7 +45,10 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-
+        if(Input.GetKeyDown(KeyCode.G))
+        {
+            GD.ItemDB_KR[0].count++;
+        }
     }
 
     public void SavaData()
