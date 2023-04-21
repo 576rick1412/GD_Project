@@ -109,7 +109,7 @@ public class GameManager : MonoBehaviour
         // AES 암호화 키
         [HideInInspector]
         public string
-            key = "fJd*pN#vEg$qXoD&iLmZy@tA!lUcKzHsBwRbGnY";
+            key = "m#XhYd*FJbNkWzOvLqI@cPeT";
 
         // 아이템 데이터
         public ushort[] itemCount = new ushort[33];             // 아이템 개수 저장
