@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.G))
         {
-            GD.ItemDB_KR[0].count++;
+            // GD.ItemDB_KR[0].count++;
         }
     }
 
@@ -72,6 +72,10 @@ public class GameManager : MonoBehaviour
     public void ResetMainDB()
     {
         data = new MainDB();
+
+        // 아이템 데이터
+        for (int i = 0; i < data.itemCount.Length; i++)
+            data.itemCount[i] = 0;
 
         // 설정창 - 그래픽 파트
         {
@@ -105,8 +109,10 @@ public class GameManager : MonoBehaviour
         // AES 암호화 키
         [HideInInspector]
         public string
-            key = "m#XhYd*FJbNkWzOvLqI@cPeT";
+            key = "fJd*pN#vEg$qXoD&iLmZy@tA!lUcKzHsBwRbGnY";
 
+        // 아이템 데이터
+        public ushort[] itemCount = new ushort[33];             // 아이템 개수 저장
 
         // 설정창 - 그래픽 파트
         [HideInInspector]
@@ -122,18 +128,6 @@ public class GameManager : MonoBehaviour
 
         // 설정창 - 게임플레이 파트
         public bool isKorean;
-    }
-
-    [Serializable]
-    public class ItemDB
-    {
-        // AES 암호화 키
-        [HideInInspector]
-        public string
-            key = "Y@nGhLz*UjX#pKmQxV$cEiFwS";
-
-
-
     }
 }
 
