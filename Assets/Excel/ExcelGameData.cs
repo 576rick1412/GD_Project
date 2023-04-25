@@ -7,5 +7,6 @@ using UnityEngine;
 [ExcelAsset]
 public class ExcelGameData : ScriptableObject
 {
-	public List<ExcelGameDataBase> ItemDB_KR; 
+	public List<ExcelItemDataBase> ItemDB_KR;
+	public List<ExcelEnemyDataBase> EnemyInfo;
 }

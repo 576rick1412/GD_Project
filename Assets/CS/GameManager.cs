@@ -36,19 +36,18 @@ public class GameManager : MonoBehaviour
             (int)data.graphic_Resolution[data.graphic_ResolutionIndex].x,
             (int)data.graphic_Resolution[data.graphic_ResolutionIndex].y,
             data.isFullScreen);
+
+        LoadData();
     }
 
     void Start()
     {
-        LoadData();
+        
     }
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.G))
-        {
-            // GD.ItemDB_KR[0].count++;
-        }
+
     }
 
     public void SavaData()
@@ -99,8 +98,12 @@ public class GameManager : MonoBehaviour
         // 설정창 - 게임플레이 파트
         data.isKorean = true;
 
+        // =======================================================
 
-        SavaData();
+
+
+
+    SavaData();
     }
 
     [Serializable]
@@ -128,6 +131,9 @@ public class GameManager : MonoBehaviour
 
         // 설정창 - 게임플레이 파트
         public bool isKorean;
+
+        // =======================================================
+
     }
 }
 
