@@ -14,6 +14,6 @@ public class GameUI : MonoBehaviour
     void Update()
     {
         float hh = GameObject.Find("Player").GetComponent<Player>()._HP;
-        playerHpTMP.text = "Player HP : " + hh;
+        playerHpTMP.text = "Player hp : " + hh;
     }
 }

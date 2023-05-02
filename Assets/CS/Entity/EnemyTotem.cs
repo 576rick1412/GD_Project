@@ -32,7 +32,7 @@ public class EnemyTotem : CharaInfo
         setAtk = atk;
         
         hpBar = gameObject.transform.Find("Enemy UI Canvas").
-                              transform.Find("HP").
+                              transform.Find("hp").
                               transform.Find("Bar").
                               gameObject.GetComponent<Image>();
 
@@ -54,7 +54,7 @@ public class EnemyTotem : CharaInfo
             return;
         }
 
-        hpBar.fillAmount = _HP / setHP;
+        hpBar.fillAmount = _HP / _SetHP;
         hpBar.gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
 
         // FSM이 실행중일 시 추가적인 적 컨트롤을 하지 않음
@@ -89,13 +89,13 @@ public class EnemyTotem : CharaInfo
 
             Vector2 velo = Vector2.zero;
             transform.position =
-            Vector2.MoveTowards(transform.position, wayPoints[wayIndex].position, speed * Time.deltaTime);
+            Vector2.MoveTowards(transform.position, wayPoints[wayIndex].position, _Speed * Time.deltaTime);
         }
         else if (hit.collider.gameObject.CompareTag("Player"))
         {
 
-            Debug.DrawRay(transform.position, transform.right * atk.length, Color.red);
-            hit = Physics2D.Raycast(transform.position, transform.right, atk.length);
+            Debug.DrawRay(transform.position, transform.right * atk._Length, Color.red);
+            hit = Physics2D.Raycast(transform.position, transform.right, atk._Length);
             if (hit.collider == null) { }
             else if (hit.collider.gameObject.CompareTag("Player"))
             {
@@ -115,7 +115,7 @@ public class EnemyTotem : CharaInfo
 
         ChangeAnim("Attack_Z");
 
-        yield return new WaitForSeconds(setAtk.delay);
+        yield return new WaitForSeconds(setAtk._Delay);
 
         isMoveLock = false;
         yield return null;
@@ -139,7 +139,7 @@ public class EnemyTotem : CharaInfo
             Rotate(rot);
 
             // 만약 플레이어와 가까워져 공격 범위 내에 들어온다면.....
-            if (Vector2.Distance(playerPos.position, transform.position) < atk.length)
+            if (Vector2.Distance(playerPos.position, transform.position) < atk._Length)
             {
                 goto A;
             }

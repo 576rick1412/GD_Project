@@ -29,6 +29,14 @@ public class Player : CharaInfo
         box2D = GetComponent<BoxCollider2D>();
     }
 
+    protected void AttackReset(
+        int idx, int damage, float delay, float length)
+    {
+        atk[idx]._Damage = damage;
+        atk[idx]._Delay  = delay;
+        atk[idx]._Length = length;
+    }
+
     protected override void Start()
     {
         isPlatform = false;
@@ -60,7 +68,7 @@ public class Player : CharaInfo
         {
             setAtk = atk[0];
             ChangeAnim("Attack_Z");
-            StartCoroutine(MoveUnlock(setAtk.delay));
+            StartCoroutine(MoveUnlock(setAtk._Delay));
             return;
         }
 

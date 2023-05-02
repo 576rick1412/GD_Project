@@ -7,41 +7,81 @@ public class CharaInfo : MonoBehaviour
 {
     protected bool isPlayer;    // 플레이어인지 여부
 
+    // ---------------------------
+    // 변수
+    // ---------------------------
+    [Header("캐릭터 기본 설정")]
+    float setHP;         // HP 최대치 저장
+    float hp;            // 캐릭터 HP
+    float speed;         // 캐릭터 속도
+    float jumpValue;     // 캐릭터 점프 높이
+
+    // ---------------------------
+    // 프로퍼티
+    // ---------------------------
     public float _HP
     {
-        get
-        { 
-            return HP;
-        }
+        get { return hp; }
 
         set
         {
-            if(HP <= 0)
+            if (hp <= 0)
             {
                 return;
             }   // 체력이 0 이하라면 리턴
 
-            HP -= value;
-            if (HP <= 0) Die();
+            hp -= value;
+            if (hp <= 0) Die();
             else Hit();
         }
-    }         // 체력 관리 프로퍼티
-    [Header("캐릭터 기본 설정")]
-    public float setHP;         // HP 최대치 저장
-    [HideInInspector]
-    public float HP;            // 캐릭터 HP
-    public float speed;         // 캐릭터 속도
-    public float jumpValue;     // 캐릭터 점프 높이
+    }             // 체력 관리
+    protected float _SetHP          // 최대 체력 관리
+    {
+        get { return setHP; }
+        set { setHP = value; }
+    }
+    protected float _Speed
+    {
+        get { return speed; }
+        set { speed = value; }
+    }       // 스피드 관리
+    protected float _JumpValue
+    {
+        get { return jumpValue; }
+        set { jumpValue = value; }
+    }   // 점프 관리
 
+
+    // ---------------------------
+    // 기타
+    // ---------------------------
     protected bool isGround;    // 바닥 체크 && 점프 체크
     protected bool isMoveLock;  // 캐릭터 이동 잠금
 
     [Serializable]
-    public struct Attack
+    public class Attack
     {
-        public int damage;      // 공격 데미지
-        public float delay;     // 공격 딜레이
-        public float length;    // 공격 길이
+        // 변수
+        int damage;      // 공격 데미지
+        float delay;     // 공격 딜레이
+        float length;    // 공격 길이
+
+        // 프로퍼티
+        public int _Damage
+        {
+            get { return damage; }
+            set { damage = value; }
+        }   // 데미지 관리
+        public float _Delay
+        {
+            get { return delay; }
+            set { delay = value; }
+        }   // 딜레이 관리
+        public float _Length
+        {
+            get { return length; }
+            set { length = value; }
+        }   // 공격 길이 관리
     }
 
     protected Attack setAtk;
@@ -55,12 +95,20 @@ public class CharaInfo : MonoBehaviour
      1 : 달리기
      */
 
+    protected virtual void CharaReset(
+        float setHp,float speed,float jumpValue )
+    {
+        _SetHP = setHp;
+        _Speed = speed;
+        _JumpValue = jumpValue;
+    }
+
     protected virtual void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
 
-        HP = setHP;     // 체력 초기화
+        hp = setHP;     // 체력 초기화
 
         // 피격 관련 설정
         if(isPlayer)
@@ -118,25 +166,24 @@ public class CharaInfo : MonoBehaviour
     // Cast함수들은 애니메이션 이벤트에서 사용
     public virtual void Cast_S()
     {
-        Debug.DrawRay(transform.position, transform.right * setAtk.length, Color.red);
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, setAtk.length, mask);
+        Debug.DrawRay(transform.position, transform.right * setAtk._Length, Color.red);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, setAtk._Length, mask);
 
         if (hit.collider != null)
         {
-            hit.collider.gameObject.GetComponent<CharaInfo>()._HP = setAtk.damage;
+            hit.collider.gameObject.GetComponent<CharaInfo>()._HP = setAtk._Damage;
         }
     }
-
     public virtual void Cast_M()
     {
-        Debug.DrawRay(transform.position, transform.right * setAtk.length, Color.red);
-        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, transform.right, setAtk.length, mask);
+        Debug.DrawRay(transform.position, transform.right * setAtk._Length, Color.red);
+        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, transform.right, setAtk._Length, mask);
 
         if (hits == null) return;
 
         foreach (var i in hits)
         {
-            i.collider.gameObject.GetComponent<CharaInfo>()._HP = setAtk.damage;
+            i.collider.gameObject.GetComponent<CharaInfo>()._HP = setAtk._Damage;
         }
     }
 

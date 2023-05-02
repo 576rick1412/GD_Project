@@ -72,9 +72,7 @@ public class GameManager : MonoBehaviour
     {
         data = new MainDB();
 
-        // 아이템 데이터
-        for (int i = 0; i < data.itemCount.Length; i++)
-            data.itemCount[i] = 0;
+        // =======================================================
 
         // 설정창 - 그래픽 파트
         {
@@ -100,7 +98,14 @@ public class GameManager : MonoBehaviour
 
         // =======================================================
 
+        // 아이템 데이터 초기화
+        for (int i = 0; i < data.itemCount.Length; i++)
+            data.itemCount[i] = 0;
 
+        // 적 체크 데이터 초기화
+        for (int i = 0; i < data.isEnemyConfirmeds.Length; i++)
+            data.isEnemyConfirmeds[i] = false;
+            
 
 
     SavaData();
@@ -114,8 +119,9 @@ public class GameManager : MonoBehaviour
         public string
             key = "m#XhYd*FJbNkWzOvLqI@cPeT";
 
-        // 아이템 데이터
-        public ushort[] itemCount = new ushort[33];             // 아이템 개수 저장
+
+
+        // =======================================================
 
         // 설정창 - 그래픽 파트
         [HideInInspector]
@@ -134,6 +140,11 @@ public class GameManager : MonoBehaviour
 
         // =======================================================
 
+        // 만능책 - 도감
+        public bool[] isEnemyConfirmeds = new bool[28];         // 저치한 경험이 있는 적 체크
+
+        // 만능책 - 인벤토리
+        public ushort[] itemCount = new ushort[33];             // 아이템 데이터 저장
     }
 }
 

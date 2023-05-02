@@ -27,12 +27,20 @@ public class Enemy : CharaInfo
     public Transform[] wayPoints;       // 적 이동 경로
     public int wayIndex;                // 직 이동 경로 인덱스
 
+    protected void AttackReset(
+    int idx, int damage, float delay, float length)
+    {
+        atk[idx]._Damage = damage;
+        atk[idx]._Delay = delay;
+        atk[idx]._Length = length;
+    }
+
     protected override void Awake()
     {
         base.Awake();
 
         hpBar = gameObject.transform.Find("Enemy UI Canvas").
-                              transform.Find("HP").
+                              transform.Find("hp").
                               transform.Find("Bar").
                               gameObject.GetComponent<Image>();
     }
@@ -48,7 +56,7 @@ public class Enemy : CharaInfo
             return;
         }
 
-        hpBar.fillAmount = _HP / setHP;
+        hpBar.fillAmount = _HP / _SetHP;
         hpBar.gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
 
         // FSM이 실행중일 시 추가적인 적 컨트롤을 하지 않음
@@ -135,7 +143,7 @@ public class Enemy : CharaInfo
         setAtk = atk[0];
         ChangeAnim("Attack_Z");
 
-        yield return new WaitForSeconds(setAtk.delay);
+        yield return new WaitForSeconds(setAtk._Delay);
 
         isMoveLock = false;
         yield return null;

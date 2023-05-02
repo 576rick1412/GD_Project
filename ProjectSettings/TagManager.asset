@@ -9,6 +9,7 @@ TagManager:
   - Enemy
   - EnemyHead
   - Bullet
+  - Knife
   layers:
   - Default
   - TransparentFX
