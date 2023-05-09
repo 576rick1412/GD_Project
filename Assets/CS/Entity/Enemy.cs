@@ -3,36 +3,69 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+using System.Text;
+using BackEnd;
+
 public class Enemy : CharaInfo
 {
-    Image hpBar;            // 적 체력바
+    protected int enemyIndex;
 
-    [Header("공격 설정")]
-    public Attack[] atk;            // 공격 구조체 배열
+    Image hpBar;                    // 적 체력바
+
+    [HideInInspector]
+    public Attack atk;              // 공격 구조체 배열
 
     [Header("적 설정")]
-    public float desTime;           // 사망 이후 삭제까지 걸리는 시간
+    float desTime = 4f;             // 사망 이후 삭제까지 걸리는 시간
     bool isDie;                     // 사망 체크
-    public float nowDis;            // 적과 플레이어간의 거리
-    [SerializeField]
-    float[] PEdis = new float[4];   // 플레이어 - 적 사이의 거리 저장
+    float[] PEdis = new float[2];   // 플레이어 - 적 사이의 거리 저장
     /* PEdis 단계
      * 0 : 공격 - 플레이어 공격
      * 1 : 추격 - 플레이어 추격
-     * 2 : 경계 - 돌아다니며 플레이어 탐색
      */
 
     // 경계 설정
     protected float boundarySpeed = 3f; // 적 경계 속도
     public Transform[] wayPoints;       // 적 이동 경로
-    public int wayIndex;                // 직 이동 경로 인덱스
+    int wayIndex;                       // 적 이동 경로 인덱스
 
-    protected void AttackReset(
-    int idx, int damage, float delay, float length)
+    protected void AttackReset()
     {
-        atk[idx]._Damage = damage;
-        atk[idx]._Delay = delay;
-        atk[idx]._Length = length;
+        string chartId = "79721";
+
+        Debug.Log($"{chartId}의 차트 불러오기를 요청합니다.");
+        var bro = Backend.Chart.GetChartContents(chartId);
+
+        if (bro.IsSuccess() == false)
+        {
+            Debug.LogError($"{chartId}의 차트를 불러오는 중, 에러가 발생했습니다. : " + bro);
+            return;
+        }
+
+        Debug.Log("차트 불러오기에 성공했습니다. : " + bro);
+
+        // 인덱스로 뽑아오는 법을 몰라.....직접 돌려보며 체크.......
+        // 아이템 수가 적기 때문에 가능한 방법인.....
+        LitJson.JsonData thisEnemyData = null;
+        foreach (LitJson.JsonData gameData in bro.FlattenRows())
+        {
+            if(int.Parse(gameData["Code"].ToString()) == enemyIndex)
+            {
+                thisEnemyData = gameData;
+                break;
+            }
+        }
+
+        atk._Damage =   int.Parse(thisEnemyData["Dmg"      ].ToString());
+        atk._Delay =  float.Parse(thisEnemyData["Delay"    ].ToString());
+        atk._Length = float.Parse(thisEnemyData["AtkLength"].ToString());
+
+        PEdis[0] =    float.Parse(thisEnemyData["PEdis0"   ].ToString());
+        PEdis[1] =    float.Parse(thisEnemyData["PEdis1"   ].ToString());
+
+        _SetHP =      float.Parse(thisEnemyData["HP"       ].ToString());
+
+        HpReset();     // 체력 초기화
     }
 
     protected override void Awake()
@@ -40,13 +73,22 @@ public class Enemy : CharaInfo
         base.Awake();
 
         hpBar = gameObject.transform.Find("Enemy UI Canvas").
-                              transform.Find("hp").
+                              transform.Find("HP").
                               transform.Find("Bar").
                               gameObject.GetComponent<Image>();
     }
     protected override void Start()
     {
         isDie = false;
+        Invoke("AttackReset", 0.5f);
+
+        Debug.Log(atk._Damage + "\n" +
+            atk._Damage + "\n" +
+            atk._Delay + "\n" +
+            atk._Length + "\n" +
+            PEdis[0] + "\n" +
+            PEdis[1] + "\n" +
+            _SetHP);
     }
 
     protected override void Update()
@@ -140,7 +182,7 @@ public class Enemy : CharaInfo
     {
         isMoveLock = true;
 
-        setAtk = atk[0];
+        setAtk = atk;
         ChangeAnim("Attack_Z");
 
         yield return new WaitForSeconds(setAtk._Delay);
