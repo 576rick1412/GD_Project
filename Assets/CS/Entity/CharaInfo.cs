@@ -51,6 +51,7 @@ public class CharaInfo : MonoBehaviour
         set { jumpValue = value; }
     }   // 점프 관리
 
+    protected void HpReset() { hp = setHP; }
 
     // ---------------------------
     // 기타
@@ -95,6 +96,8 @@ public class CharaInfo : MonoBehaviour
      1 : 달리기
      */
 
+    
+
     protected virtual void CharaReset(
         float setHp,float speed,float jumpValue )
     {
@@ -108,10 +111,10 @@ public class CharaInfo : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
 
-        hp = setHP;     // 체력 초기화
+        HpReset();
 
         // 피격 관련 설정
-        if(isPlayer)
+        if (isPlayer)
         {
             mask = LayerMask.GetMask("Enemy");
         }
