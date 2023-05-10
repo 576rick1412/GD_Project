@@ -6,15 +6,15 @@ using System;
 public class CharaInfo : MonoBehaviour
 {
     protected bool isPlayer;    // 플레이어인지 여부
-
+    protected int charaIndex;
     // ---------------------------
     // 변수
     // ---------------------------
     [Header("캐릭터 기본 설정")]
-    float setHP;         // HP 최대치 저장
-    float hp;            // 캐릭터 HP
-    float speed;         // 캐릭터 속도
-    float jumpValue;     // 캐릭터 점프 높이
+    public float setHP;         // HP 최대치 저장
+    public float hp;            // 캐릭터 HP
+    public float speed;         // 캐릭터 속도
+    public float jumpValue;     // 캐릭터 점프 높이
 
     // ---------------------------
     // 프로퍼티
@@ -51,7 +51,7 @@ public class CharaInfo : MonoBehaviour
         set { jumpValue = value; }
     }   // 점프 관리
 
-    protected void HpReset() { hp = setHP; }
+    protected void HpReset() { hp = _SetHP; }
 
     // ---------------------------
     // 기타
@@ -106,12 +106,17 @@ public class CharaInfo : MonoBehaviour
         _JumpValue = jumpValue;
     }
 
+    protected virtual void CharaInfoReset()
+    {
+        
+    }
+
     protected virtual void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
 
-        HpReset();
+        
 
         // 피격 관련 설정
         if (isPlayer)
@@ -129,6 +134,9 @@ public class CharaInfo : MonoBehaviour
     protected virtual void Start()
     {
         isGround = true;
+        CharaInfoReset();
+
+        HpReset();
     }
 
     protected virtual void Update()

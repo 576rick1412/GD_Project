@@ -8,8 +8,6 @@ using BackEnd;
 
 public class Enemy : CharaInfo
 {
-    protected int enemyIndex;
-
     Image hpBar;                    // 적 체력바
 
     [HideInInspector]
@@ -25,52 +23,29 @@ public class Enemy : CharaInfo
      */
 
     // 경계 설정
-    protected float boundarySpeed = 3f; // 적 경계 속도
     public Transform[] wayPoints;       // 적 이동 경로
     int wayIndex;                       // 적 이동 경로 인덱스
 
-    protected void AttackReset()
+    protected override void CharaInfoReset()
     {
-        string chartId = "79721";
+        atk._Damage = GameManager.GM.enemyList[charaIndex - 1].dmg;
+        atk._Delay  = GameManager.GM.enemyList[charaIndex - 1].delay;
+        atk._Length = GameManager.GM.enemyList[charaIndex - 1].atkLength;
 
-        Debug.Log($"{chartId}의 차트 불러오기를 요청합니다.");
-        var bro = Backend.Chart.GetChartContents(chartId);
+        PEdis[0]    = GameManager.GM.enemyList[charaIndex - 1].peDis0;
+        PEdis[1]    = GameManager.GM.enemyList[charaIndex - 1].peDis1;
+                                                         
+        _Speed      = GameManager.GM.enemyList[charaIndex - 1].speed;
+                                                         
+        _SetHP      = GameManager.GM.enemyList[charaIndex - 1].hp;
 
-        if (bro.IsSuccess() == false)
-        {
-            Debug.LogError($"{chartId}의 차트를 불러오는 중, 에러가 발생했습니다. : " + bro);
-            return;
-        }
-
-        Debug.Log("차트 불러오기에 성공했습니다. : " + bro);
-
-        // 인덱스로 뽑아오는 법을 몰라.....직접 돌려보며 체크.......
-        // 아이템 수가 적기 때문에 가능한 방법인.....
-        LitJson.JsonData thisEnemyData = null;
-        foreach (LitJson.JsonData gameData in bro.FlattenRows())
-        {
-            if(int.Parse(gameData["Code"].ToString()) == enemyIndex)
-            {
-                thisEnemyData = gameData;
-                break;
-            }
-        }
-
-        atk._Damage =   int.Parse(thisEnemyData["Dmg"      ].ToString());
-        atk._Delay =  float.Parse(thisEnemyData["Delay"    ].ToString());
-        atk._Length = float.Parse(thisEnemyData["AtkLength"].ToString());
-
-        PEdis[0] =    float.Parse(thisEnemyData["PEdis0"   ].ToString());
-        PEdis[1] =    float.Parse(thisEnemyData["PEdis1"   ].ToString());
-
-        _SetHP =      float.Parse(thisEnemyData["HP"       ].ToString());
-
-        HpReset();     // 체력 초기화
+        base.CharaInfoReset();
     }
 
     protected override void Awake()
     {
         base.Awake();
+        charaIndex = 1;
 
         hpBar = gameObject.transform.Find("Enemy UI Canvas").
                               transform.Find("HP").
@@ -79,16 +54,8 @@ public class Enemy : CharaInfo
     }
     protected override void Start()
     {
+        base.Start();
         isDie = false;
-        Invoke("AttackReset", 0.5f);
-
-        Debug.Log(atk._Damage + "\n" +
-            atk._Damage + "\n" +
-            atk._Delay + "\n" +
-            atk._Length + "\n" +
-            PEdis[0] + "\n" +
-            PEdis[1] + "\n" +
-            _SetHP);
     }
 
     protected override void Update()
@@ -244,7 +211,7 @@ public class Enemy : CharaInfo
         }
         else
         {
-            transform.Translate(Vector3.right * boundarySpeed * Time.deltaTime);
+            transform.Translate(Vector3.right * _Speed * Time.deltaTime);
 
             /*
             Vector2 velo = Vector2.zero;

@@ -14,7 +14,8 @@ public class Player : CharaInfo
     public bool isJumpCool;     // 점프 가능 상태, 거짓일 때 점프 가능
     public float jumpDelay;     // 점프 딜레이
 
-    public Attack[] atk;
+    public Attack atk;
+    public Attack skill_1;
 
     float setH = 1;             // 좌우 이동키 동시에 눌렀을 때 멈추지 않도록 하는 변수
 
@@ -25,20 +26,36 @@ public class Player : CharaInfo
     {
         isPlayer = true;
         base.Awake();
+        charaIndex = 1;
 
         box2D = GetComponent<BoxCollider2D>();
     }
-
-    protected void AttackReset(
-        int idx, int damage, float delay, float length)
+    protected override void CharaInfoReset()
     {
-        atk[idx]._Damage = damage;
-        atk[idx]._Delay  = delay;
-        atk[idx]._Length = length;
+        _SetHP              = GameManager.GM.eliteList[charaIndex - 1].hp;
+        _Speed              = GameManager.GM.eliteList[charaIndex - 1].speed;
+        _JumpValue          = GameManager.GM.eliteList[charaIndex - 1].jumpValue;
+
+        atk._Damage      = GameManager.GM.eliteList[charaIndex - 1].atkDamage;
+        atk._Delay       = GameManager.GM.eliteList[charaIndex - 1].atkDelay;
+        atk._Length      = GameManager.GM.eliteList[charaIndex - 1].atkLength;
+                            
+        skill_1._Damage      = GameManager.GM.eliteList[charaIndex - 1].skill_1_Damage;
+        skill_1._Delay       = GameManager.GM.eliteList[charaIndex - 1].Skill_1_Delay;
+        skill_1._Length      = GameManager.GM.eliteList[charaIndex - 1].Skill_1_Length;
+
+        knife.damage        = GameManager.GM.eliteList[charaIndex - 1].Skill_2_Damage;
+        knife.speed         = GameManager.GM.eliteList[charaIndex - 1].speed * 3;
+        knife.coolTime      = GameManager.GM.eliteList[charaIndex - 1].Skill_2_Delay;
+        knife.knifeDesDelay = GameManager.GM.eliteList[charaIndex - 1].Skill_2_Length;
+        knife.sigma = 0f;
+
+        base.CharaInfoReset();
     }
 
     protected override void Start()
     {
+        base.Start();
         isPlatform = false;
     }
 
@@ -66,7 +83,7 @@ public class Player : CharaInfo
         // Z 공격
         if (Input.GetKeyDown(KCM.ATTACK_1))
         {
-            setAtk = atk[0];
+            setAtk = atk;
             ChangeAnim("Attack_Z");
             StartCoroutine(MoveUnlock(setAtk._Delay));
             return;
@@ -172,9 +189,8 @@ public class Player : CharaInfo
 
         yield return new WaitForSeconds(knife.coolTime);
 
-        knife.knifeCool = false;
-
         Destroy(temp, knife.knifeDesDelay);
+        knife.knifeCool = false;
     }
 
     IEnumerator JumpDelay()

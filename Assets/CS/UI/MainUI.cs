@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Audio;
 using UnityEngine.UI;
 using TMPro;
@@ -77,6 +78,12 @@ public class MainUI : MonoBehaviour
         }
     }
 
+    // 버튼 관련
+
+    // 인게임 진입 버튼
+    public void GameStart() { LoadingManager.LoadScene("SampleScene"); }
+
+    // UI창 관련
     public void EndGameWindow()
     {
         WindowControl(ref gameEndWindow);

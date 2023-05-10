@@ -18,6 +18,10 @@ public class GameManager : MonoBehaviour
     public float maxZoom;
     public bool isZoom;
 
+    // DB에서 뽑은 정보 리스트
+    public List<EnemyList> enemyList;
+    public List<EliteList> eliteList;
+
     // 메인DB 및 데이터 저장 경로
     public MainDB data;
     string filePath;
@@ -146,6 +150,51 @@ public class GameManager : MonoBehaviour
         // 만능책 - 인벤토리
         public ushort[] itemCount = new ushort[33];             // 아이템 데이터 저장
     }
+}
+
+[Serializable]
+public struct EnemyList
+{
+    public string krName;
+    public int code;
+
+    public string enName;
+    public string tear;
+
+    public string krArea;
+    public string enArea;
+
+    public float hp;
+    public float speed;
+
+    public int dmg;
+    public float delay;
+    public float atkLength;
+
+    public float peDis0;
+    public float peDis1;
+}
+[Serializable]
+public struct EliteList
+{
+    public string name;
+    public int code;
+
+    public float hp;
+    public float speed;
+    public float jumpValue;
+
+    public int atkDamage;
+    public float atkDelay;
+    public float atkLength;
+
+    public int skill_1_Damage;
+    public float Skill_1_Delay;
+    public float Skill_1_Length;
+
+    public int Skill_2_Damage;
+    public float Skill_2_Delay;
+    public float Skill_2_Length;
 }
 
 namespace AesEncryptionNS.Con

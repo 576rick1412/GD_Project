@@ -28,8 +28,9 @@ public class BackendManager : MonoBehaviour
             BackendLogin.Instance.CustomLogin("user1", "1234"); // 뒤끝 로그인 함수
 
             // [추가] chartId의 차트 정보 불러오기
-            // [변경 필요] <파일 ID>을 뒤끝 콘솔 > 차트 관리 > 아이템차트에서 등록한 차트의 파일 ID값으로 변경해주세요.
-            BackendChart.Instance.EnemyChartGet(); // 예시 : "64584"
+            // [변경 필요] <파일 ID>을 뒤끝 콘솔 > 차트 관리 > 아이템차트에서 등록한 차트의 파일 ID값으로 변경해주세요. 예시 : "64584"
+            BackendChart.Instance.EnemyChartGet(); 
+            BackendChart.Instance.EliteChartGet();
 
             Debug.Log("테스트를 종료합니다.");
         });

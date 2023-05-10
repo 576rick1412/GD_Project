@@ -36,26 +36,73 @@ public class BackendChart
         }
 
         Debug.Log("차트 불러오기에 성공했습니다. : " + bro);
-        /*
+        
         foreach (LitJson.JsonData gameData in bro.FlattenRows())
         {
-            StringBuilder content = new StringBuilder();
-            content.AppendLine("Code : " + int.Parse(gameData["Code"].ToString()));
+            EnemyList temp = new EnemyList();
 
-            content.AppendLine("KR_name : " + gameData["KR_name"].ToString());
-            content.AppendLine("EN_name : " + gameData["EN_name"].ToString());
+            temp.code        = int.Parse(gameData["Code"     ].ToString());
 
-            content.AppendLine("tear : " + gameData["tear"].ToString());
-            content.AppendLine("KR_area : " + gameData["KR_area"].ToString());
-            content.AppendLine("EN_area : " + gameData["EN_area"].ToString());
+            temp.krName                = gameData["KR_name"  ].ToString();
+            temp.enName                = gameData["EN_name"  ].ToString();
+            temp.tear                  = gameData["tear"     ].ToString();
 
-            content.AppendLine("Dmg : " + int.Parse(gameData["Dmg"].ToString()));
-            content.AppendLine("Delay : " + float.Parse(gameData["Delay"].ToString()));
-            content.AppendLine("Length : " + float.Parse(gameData["AtkLength"].ToString()));
+            temp.krArea                = gameData["KR_area"  ].ToString();
+            temp.enArea                = gameData["EN_area"  ].ToString();
 
-            Debug.Log(content.ToString());
+            temp.hp        = float.Parse(gameData["HP"       ].ToString());
+            temp.speed     = float.Parse(gameData["Speed"    ].ToString());
+
+            temp.dmg         = int.Parse(gameData["Dmg"      ].ToString());
+            temp.delay     = float.Parse(gameData["Delay"    ].ToString());
+            temp.atkLength = float.Parse(gameData["AtkLength"].ToString());
+
+            temp.peDis0    = float.Parse(gameData["PEdis0"   ].ToString());
+            temp.peDis1    = float.Parse(gameData["PEdis1"   ].ToString());
+
+            GameManager.GM.enemyList.Add(temp); 
         }
-        */
+    }
+    public void EliteChartGet()
+    {
+        string chartId = "79830";
+
+        Debug.Log($"{chartId}의 차트 불러오기를 요청합니다.");
+        var bro = Backend.Chart.GetChartContents(chartId);
+
+        if (bro.IsSuccess() == false)
+        {
+            Debug.LogError($"{chartId}의 차트를 불러오는 중, 에러가 발생했습니다. : " + bro);
+            return;
+        }
+
+        Debug.Log("차트 불러오기에 성공했습니다. : " + bro);
+
+        foreach (LitJson.JsonData gameData in bro.FlattenRows())
+        {
+            EliteList temp = new EliteList();
+
+            temp.code             = int.Parse(gameData["Code"          ].ToString());
+            temp.name                       = gameData["Name"          ].ToString();
+                                                                       
+            temp.hp             = float.Parse(gameData["HP"            ].ToString());
+            temp.speed          = float.Parse(gameData["Speed"         ].ToString());
+            temp.jumpValue      = float.Parse(gameData["JumpValue"     ].ToString());
+
+            temp.atkDamage        = int.Parse(gameData["AtkDamage"     ].ToString());
+            temp.atkDelay       = float.Parse(gameData["AtkDelay"      ].ToString());
+            temp.atkLength      = float.Parse(gameData["AtkLength"     ].ToString());
+
+            temp.skill_1_Damage   = int.Parse(gameData["Skill_1_Damage"].ToString());
+            temp.Skill_1_Delay  = float.Parse(gameData["Skill_1_Delay" ].ToString());
+            temp.Skill_1_Length = float.Parse(gameData["Skill_2_Length"].ToString());
+
+            temp.Skill_2_Damage   = int.Parse(gameData["Skill_2_Damage"].ToString());
+            temp.Skill_2_Delay  = float.Parse(gameData["Skill_2_Delay" ].ToString());
+            temp.Skill_2_Length = float.Parse(gameData["Skill_2_Length"].ToString());
+
+            GameManager.GM.eliteList.Add(temp);
+        }
     }
 
     public void ItemChartGet()
