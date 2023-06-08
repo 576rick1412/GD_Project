@@ -36,19 +36,19 @@ public class Player : CharaInfo
         _Speed              = GameManager.GM.eliteList[charaIndex - 1].speed;
         _JumpValue          = GameManager.GM.eliteList[charaIndex - 1].jumpValue;
 
-        atk._Damage      = GameManager.GM.eliteList[charaIndex - 1].atkDamage;
-        atk._Delay       = GameManager.GM.eliteList[charaIndex - 1].atkDelay;
-        atk._Length      = GameManager.GM.eliteList[charaIndex - 1].atkLength;
+        atk._Damage         = GameManager.GM.eliteList[charaIndex - 1].atkDamage;
+        atk._Delay          = GameManager.GM.eliteList[charaIndex - 1].atkDelay;
+        atk._Length         = GameManager.GM.eliteList[charaIndex - 1].atkLength;
                             
-        skill_1._Damage      = GameManager.GM.eliteList[charaIndex - 1].skill_1_Damage;
-        skill_1._Delay       = GameManager.GM.eliteList[charaIndex - 1].Skill_1_Delay;
-        skill_1._Length      = GameManager.GM.eliteList[charaIndex - 1].Skill_1_Length;
+        skill_1._Damage     = GameManager.GM.eliteList[charaIndex - 1].skill_1_Damage;
+        skill_1._Delay      = GameManager.GM.eliteList[charaIndex - 1].Skill_1_Delay;
+        skill_1._Length     = GameManager.GM.eliteList[charaIndex - 1].Skill_1_Length;
 
-        knife.damage        = GameManager.GM.eliteList[charaIndex - 1].Skill_2_Damage;
-        knife.speed         = GameManager.GM.eliteList[charaIndex - 1].speed * 3;
-        knife.coolTime      = GameManager.GM.eliteList[charaIndex - 1].Skill_2_Delay;
-        knife.knifeDesDelay = GameManager.GM.eliteList[charaIndex - 1].Skill_2_Length;
-        knife.sigma = 0f;
+        knife._Damage       = GameManager.GM.eliteList[charaIndex - 1].Skill_2_Damage;
+        knife._Speed        = GameManager.GM.eliteList[charaIndex - 1].speed * 3;
+        knife._CoolTime     = GameManager.GM.eliteList[charaIndex - 1].Skill_2_Delay;
+        knife._KnifeDesDelay= GameManager.GM.eliteList[charaIndex - 1].Skill_2_Length;
+        knife._Sigma        = 0f;
 
         base.CharaInfoReset();
     }
@@ -74,7 +74,7 @@ public class Player : CharaInfo
         bool isControl = false; // 조작 기록 확인
 
         // 투척검 추척
-        if (Input.GetKey(KCM.THROWINGKNIFE) && !knife.knifeCool)
+        if (Input.GetKey(KCM.THROWINGKNIFE) && !knife._KnifeCool)
         {
             StartCoroutine(FireKnife());
             return;
@@ -171,26 +171,26 @@ public class Player : CharaInfo
 
     IEnumerator FireKnife()
     {
-        knife.knifeCool = true;
+        knife._KnifeCool = true;
 
         // 생성 부분
         int rot = setH < 0 ? 0 : -1;
         GameObject temp = Instantiate(knife.knife,
                           transform.position,
                           Quaternion.Euler(0, 180 * rot, 0));
-        temp.GetComponent<ThrowingKnife>().damage = knife.damage;
+        temp.GetComponent<ThrowingKnife>().damage = knife._Damage;
 
         // 발사 부분
         if (rot == 0) rot = 1;
-        float ran = Random.Range(-knife.sigma, knife.sigma);
+        float ran = Random.Range(-knife._Sigma, knife._Sigma);
         temp.GetComponent<Rigidbody2D>().AddForce(
-            new Vector3(rot * -1 * knife.speed, ran, 0),
+            new Vector3(rot * -1 * knife._Speed, ran, 0),
             ForceMode2D.Impulse);
 
-        yield return new WaitForSeconds(knife.coolTime);
+        yield return new WaitForSeconds(knife._CoolTime);
 
-        Destroy(temp, knife.knifeDesDelay);
-        knife.knifeCool = false;
+        Destroy(temp, knife._KnifeDesDelay);
+        knife._KnifeCool = false;
     }
 
     IEnumerator JumpDelay()
@@ -239,14 +239,44 @@ public class Player : CharaInfo
 public struct Knife
 {
     public GameObject knife;    // 투척검
-    public int   damage;        // 투척검 데미지
-    public float speed;         // 투척검 속도
-    public float coolTime;      // 투척검 쿨타임
-    public float knifeDesDelay; // 투척검 자폭 딜레이
-    public float sigma;         // 투척검 시그마값
+    private int   damage;        // 투척검 데미지
+    private float speed;         // 투척검 속도
+    private float coolTime;      // 투척검 쿨타임
+    private float knifeDesDelay; // 투척검 자폭 딜레이
+    private float sigma;         // 투척검 시그마값
 
-    [HideInInspector]
-    public bool knifeCool;      // 투척검 쿨타임 중
+    private bool knifeCool;      // 투척검 쿨타임 중
+
+    public int _Damage
+    {
+        get { return damage; }
+        set { damage = value; }
+    }   // 데미지 관리
+    public float _Speed
+    {
+        get { return speed; }
+        set { speed = value; }
+    }   // 투척검 속도 관리
+    public float _CoolTime
+    {
+        get { return coolTime; }
+        set { coolTime = value; }
+    }   // 공격쿨타임 관리
+    public float _KnifeDesDelay
+    {
+        get { return knifeDesDelay; }
+        set { knifeDesDelay = value; }
+    }   // 투척검 자폭시관 관리
+    public float _Sigma
+    {
+        get { return sigma; }
+        set { sigma = value; }
+    }   // 분산도 관리
+    public bool _KnifeCool
+    {
+        get { return knifeCool; }
+        set { knifeCool = value; }
+    }   // 투척검 쿨타임중 관리
 }
 
 [System.Serializable]

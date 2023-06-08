@@ -116,8 +116,6 @@ public class CharaInfo : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
 
-        
-
         // 피격 관련 설정
         if (isPlayer)
         {

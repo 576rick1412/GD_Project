@@ -5102,7 +5102,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6999740304684940028, guid: 99ba36bd703cadf439252ef3a7d7ceb8, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6999740304684940031, guid: 99ba36bd703cadf439252ef3a7d7ceb8, type: 3}
       propertyPath: m_GravityScale
@@ -7913,7 +7913,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6999740304684940028, guid: 99ba36bd703cadf439252ef3a7d7ceb8, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6999740304684940031, guid: 99ba36bd703cadf439252ef3a7d7ceb8, type: 3}
       propertyPath: m_GravityScale
@@ -9895,7 +9895,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6999740304684940028, guid: 99ba36bd703cadf439252ef3a7d7ceb8, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6999740304684940031, guid: 99ba36bd703cadf439252ef3a7d7ceb8, type: 3}
       propertyPath: m_GravityScale
@@ -17349,7 +17349,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6999740304684940028, guid: 99ba36bd703cadf439252ef3a7d7ceb8, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6999740304684940031, guid: 99ba36bd703cadf439252ef3a7d7ceb8, type: 3}
       propertyPath: m_GravityScale
@@ -19059,6 +19059,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96063258c07e3d1418d126152140c37d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  setHP: 0
+  hp: 0
+  speed: 0
+  jumpValue: 0
   KCM:
     THROWINGKNIFE: 102
     ATTACK_1: 122
@@ -19070,12 +19074,6 @@ MonoBehaviour:
     MOVE_DASH: 304
   knife:
     knife: {fileID: 4719470519041446837, guid: a31c0c352038fc54b8f67c6d280bf695, type: 3}
-    damage: 10
-    speed: 20
-    coolTime: 0.2
-    knifeDesDelay: 0.5
-    sigma: 0
-    knifeCool: 0
   isJumpCool: 0
   jumpDelay: 0.5
   isPlatform: 0
@@ -21770,7 +21768,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6999740304684940028, guid: 99ba36bd703cadf439252ef3a7d7ceb8, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6999740304684940031, guid: 99ba36bd703cadf439252ef3a7d7ceb8, type: 3}
       propertyPath: m_GravityScale
@@ -21927,7 +21925,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6999740304684940028, guid: 99ba36bd703cadf439252ef3a7d7ceb8, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6999740304684940031, guid: 99ba36bd703cadf439252ef3a7d7ceb8, type: 3}
       propertyPath: m_GravityScale
